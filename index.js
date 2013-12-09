@@ -22,7 +22,7 @@ function getClientIp(req) {
         clientIp = req.header('X-Client-IP');
 
     if (clientIp) {
-        ipAdress = clientIp;
+        ipAddress = clientIp;
     }
     else if (forwardedIpsStr) {
         // 'x-forwarded-for' header may return multiple IP addresses in
@@ -36,7 +36,6 @@ function getClientIp(req) {
         // development environment
         ipAddress = req.connection.remoteAddress;
     }
-    console.log(ipAddress);
     return ipAddress;
 }
 
