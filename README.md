@@ -1,9 +1,14 @@
 request-ip
 =========
 
-> A small node.js module to retrieve the request's IP address
+> A small node.js module to retrieve the request's IP address. 
 
 Maintainer: [Petar Bojinov](https://github.com/pbojinov)
+
+## Use Case
+
+Getting the user's IP for geolocation.
+
 
 ## Installation
 
