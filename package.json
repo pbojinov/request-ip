@@ -1,6 +1,6 @@
 {
   "name": "request-ip",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A small node.js module to retrieve the request's IP address",
   "main": "index.js",
   "repository": {
@@ -10,10 +10,12 @@
   "keywords": [
     "ip",
     "client",	
-    "middleware",
-    "request",
+    "header",
     "X-Client-IP",
-    "X-Forwarded-For"
+    "X-Forwarded-For",
+    "connection.remoteAddress",
+    "middleware",
+    "request"
   ],
   "author": "Petar Bojinov <petarbojinov@gmail.com>",
   "license": "MIT",
