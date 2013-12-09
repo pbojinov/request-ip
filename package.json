@@ -11,7 +11,7 @@
     "ip",
     "client",	
     "middleware",
-    "request"
+    "request",
     "X-Client-IP",
     "X-Forwarded-For"
   ],
