@@ -1,6 +1,6 @@
 {
   "name": "request-ip",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A small node.js module to retrieve the request's IP address",
   "main": "index.js",
   "repository": {

@@ -16,11 +16,11 @@ Getting the user's IP for geolocation.
 ## Getting Started
 
 ```javascript
-var request-ip = require('request-ip');
+var requestIp = require('request-ip');
 
 // inside middleware handler
 var ipMiddleware = function(req, res, next) {
-    var clientIp = request-ip.getClientIp(req); // on loaclhost > 127.0.0.1
+    var clientIp = requestIp.getClientIp(req); // on loaclhost > 127.0.0.1
     next();
 };
 ```

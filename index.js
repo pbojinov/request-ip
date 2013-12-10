@@ -7,8 +7,7 @@
  * @method getClientIp
  *
  * Get client IP address
- * http://catapulty.tumblr.com/post/8303749793/heroku-and-node-js-how-to-get-the-client-ip-address
- *
+ * 
  * Will return 127.0.0.1 when testing locally
  * Useful when you need the user ip for geolocation or serving localized content
  *
