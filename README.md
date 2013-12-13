@@ -12,6 +12,9 @@ Getting the user's IP for geolocation.
 ## Installation
 
     npm install request-ip
+    
+    
+![](https://nodei.co/npm/request-ip.png?downloads=true)
   
 ## Getting Started
 
