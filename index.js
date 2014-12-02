@@ -7,7 +7,7 @@
  * @method getClientIp
  *
  * Get client IP address
- * 
+ *
  * Will return 127.0.0.1 when testing locally
  * Useful when you need the user ip for geolocation or serving localized content
  *
@@ -17,7 +17,7 @@
 function getClientIp(req) {
     var ipAddress;
     // Amazon EC2 / Heroku workaround to get real client IP
-    var forwardedIpsStr = req.header('X-Forwarded-For'),
+    var forwardedIpsStr = req.header('X-Forwarder-For'),
         clientIp = req.header('X-Client-IP');
 
     if (clientIp) {
