@@ -27,7 +27,7 @@ function getClientIp(req) {
     // x-client-ip
     if (clientIp) {
         ipAddress = clientIp;
-    } 
+    }
 
     // x-forwarded-for
     else if (forwardedIpsStr) {
@@ -49,15 +49,15 @@ function getClientIp(req) {
     // fallback to something
     if (!ipAddress) {
         // ensure getting client IP address still works in development environment
-        ipAddress = req.connection.remoteAddress || 
-                    req.socket.remoteAddress ||
-                    req.connection.socket.remoteAddress;
+        ipAddress = req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;
     }
 
     return ipAddress;
 }
 
 /**
-* Expose mode public functions
-*/
+ * Expose mode public functions
+ */
 exports.getClientIp = getClientIp;
