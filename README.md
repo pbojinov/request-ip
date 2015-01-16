@@ -5,14 +5,10 @@ request-ip
 
 > Maintainer: [Petar Bojinov](https://github.com/pbojinov)
 
-## Use Case
-
-Getting the user's IP for geolocation.
 
 ## Installation
 
     npm install request-ip
-    
     
 ![](https://nodei.co/npm/request-ip.png?downloads=true)
   
@@ -30,17 +26,31 @@ var ipMiddleware = function(req, res, next) {
 
 ## How It Works
 
-**request-ip** looks for two specific headers in the request and falls back to `req.connection.remoteAddress`. The following is the order we use to determine the user ip from the request.
+**request-ip** looks for three specific headers in the request and falls back some defaults if they do not exist
+
+The following is the order we use to determine the user ip from the request.
 
 1. `X-Client-IP`  
-2. `X-Forwarded-For` header may return multiple IP addresses in the format: "client IP, proxy 1 IP,proxy 2 IP", so we take the the first one.
-3. `req.connection.remoteAddress`
+2. `X-Forwarded-For` header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.
+3. `X-Real-IP`
+4. `req.connection.remoteAddress`
+5. `req.socket.remoteAddress`
+6. `req.connection.socket.remoteAddress`
+
+## Use Case
+
+Getting a user's IP for geolocation.
 
 ## Dependencies
 
 None
 
 ## Release Notes
+
+0.0.4
+
+* add support for X-Real-Ip
+* bug fixes
 
 0.0.3
 

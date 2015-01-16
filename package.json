@@ -9,8 +9,10 @@
   },
   "keywords": [
     "ip",
+    "address",
     "client",	
     "header",
+    "X-Real-IP",
     "X-Client-IP",
     "X-Forwarded-For",
     "connection.remoteAddress",
