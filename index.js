@@ -18,7 +18,7 @@ function getClientIp(req) {
     var ipAddress;
     // Amazon EC2 / Heroku workaround to get real client IP
     var forwardedIpsStr = req.header('X-Forwarded-For'),
-        clientIp = req.header('X-Client-IP');
+        clientIp = req.header('X-Real-IP') || req.header('X-Client-IP');
 
     if (clientIp) {
         ipAddress = clientIp;
