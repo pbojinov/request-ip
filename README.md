@@ -47,6 +47,10 @@ None
 
 ## Release Notes
 
+1.0.0
+
+* add semver
+
 0.0.4
 
 * add support for X-Real-Ip
