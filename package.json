@@ -7,10 +7,13 @@
     "type": "git",
     "url": "https://github.com/pbojinov/request-ip.git"
   },
+  "scripts": {
+    "test": "node test/index.js"
+  },
   "keywords": [
     "ip",
     "address",
-    "client",	
+    "client",
     "header",
     "X-Real-IP",
     "X-Client-IP",
@@ -24,5 +27,9 @@
   "bugs": {
     "url": "https://github.com/pbojinov/request-ip/issues"
   },
-  "homepage": "https://github.com/pbojinov/request-ip"
+  "homepage": "https://github.com/pbojinov/request-ip",
+  "devDependencies": {
+    "request": "^2.54.0",
+    "tape": "^4.0.0"
+  }
 }
