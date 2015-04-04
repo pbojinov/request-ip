@@ -9,7 +9,7 @@ A tiny Node.js module for retrieving a request's IP address.
 
 ## Installation
 
-    npm install request-ip
+    npm install request-ip --save
     
 ## Getting Started
 
