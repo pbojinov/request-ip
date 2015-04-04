@@ -5,7 +5,6 @@ A tiny Node.js module to retrieve a request's IP address.
 ![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=1)
 
 ![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
-
 [![Coverage Status](https://coveralls.io/repos/pbojinov/request-ip/badge.svg)](https://coveralls.io/r/pbojinov/request-ip)
 
 ## Installation
