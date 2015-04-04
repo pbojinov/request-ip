@@ -44,15 +44,16 @@ function getClientIp(req) {
         ipAddress = forwardedIps[0];
     }
 
-    // x-real-ip
+    // x-real-ip 
+    // (default nginx proxy/fcgi)
     else if (realIp) {
         // alternative to x-forwarded-for
         // used by some proxies
         ipAddress = realIp;
     }
 
-    // x-cluster-client-ip
-    // For rackspace and river bed's stingray 
+    // x-cluster-client-ip 
+    // (Rackspace LB and Riverbed's Stingray)
     // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
     // https://splash.riverbed.com/docs/DOC-1926
     else if (clusterClientIp) {
