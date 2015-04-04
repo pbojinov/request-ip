@@ -33,7 +33,7 @@ test('x-client-ip', function(t) {
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
         // we can't make the request URL until we get the port number from the new server
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -59,7 +59,7 @@ test('x-forwarded-for', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -86,7 +86,7 @@ test('x-real-ip', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -112,7 +112,7 @@ test('x-cluster-client-ip', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -138,7 +138,7 @@ test('x-forwarded', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -164,7 +164,7 @@ test('forwarded-for', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -190,7 +190,7 @@ test('forwarded', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
@@ -213,7 +213,7 @@ test('req.connection.remoteAddress', function(t) {
     var server = new serverFactory();
     server.listen(0, serverInfo.host);
     server.on('listening', function() {
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
         request(options, callback);
     });
 
