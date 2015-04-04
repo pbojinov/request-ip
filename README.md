@@ -1,15 +1,17 @@
 #request-ip
 
+A tiny Node.js module to retrieve a request's IP address. 
+
+![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=1)
+
 ![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
 
-A tiny Node.js module to retrieve a request's IP address. 
+[![Coverage Status](https://coveralls.io/repos/pbojinov/request-ip/badge.svg)](https://coveralls.io/r/pbojinov/request-ip)
 
 ## Installation
 
     npm install request-ip
     
-![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=1)
-  
 ## Getting Started
 
 ```javascript
