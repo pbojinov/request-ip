@@ -114,9 +114,8 @@ test('req.connection.remoteAddress', function(t) {
 
     function callback(error, response, body) {
         if (!error && response.statusCode === 200) {
-            // make sure response ip is the same as the one we passed in
-            // t.equal(options.headers['x-real-ip'], body);
-            console.log(body);
+            // ip address should be equal to the server host we used at the top
+            t.equal(serverInfo.host, body);
             server.close();
         }
     }

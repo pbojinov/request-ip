@@ -21,8 +21,13 @@ function getClientIp(req) {
     // workaround to get real client IP
     // most likely because our app will be behind a [reverse] proxy or load balancer
     var clientIp = req.headers['x-client-ip'],
-        forwardedIpsStr = req.headers['x-forwarded-for'],
-        altForwardedIp = req.headers['x-real-ip'];
+        forwardedForAlt = req.headers['x-forwarded-for'],
+        realIp = req.headers['x-real-ip'],
+        // more obsure ones below
+        clusterClientIp = req.headers['x-cluster-client-ip'],
+        forwardedAlt = req.headers['x-forwarded'],
+        forwardedFor = req.headers['forwarded-for'],
+        forwarded = req.headers['forwarded'];
 
     // x-client-ip
     if (clientIp) {
@@ -30,20 +35,41 @@ function getClientIp(req) {
     }
 
     // x-forwarded-for
-    else if (forwardedIpsStr) {
+    else if (forwardedForAlt) {
         // x-forwarded-for header is more common
         // it may return multiple IP addresses in the format: 
         // "client IP, proxy 1 IP, proxy 2 IP" 
         // we pick the first one
-        var forwardedIps = forwardedIpsStr.split(',');
+        var forwardedIps = forwardedForAlt.split(',');
         ipAddress = forwardedIps[0];
     }
 
     // x-real-ip
-    else if (altForwardedIp) {
+    else if (realIp) {
         // alternative to x-forwarded-for
         // used by some proxies
-        ipAddress = altForwardedIp;
+        ipAddress = realIp;
+    }
+
+    // x-cluster-client-ip
+    // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
+    else if (clusterClientIp) {
+        ipAddress = clusterClientIp;
+    }
+
+    // x-forwarded
+    else if (forwardedAlt) {
+        ipAddress = forwardedAlt;
+    }
+
+    // forwarded-for
+    else if (forwardedFor) {
+        ipAddress = forwardedFor;
+    }
+
+    // forwarded
+    else if (forwarded) {
+        ipAddress = forwarded;
     }
 
     // fallback to something
@@ -51,7 +77,7 @@ function getClientIp(req) {
         // ensure getting client IP address still works in development environment
         ipAddress = req.connection.remoteAddress ||
             req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress;
+            req.connection.socket.remoteAddress; // for https
     }
 
     return ipAddress;
