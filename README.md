@@ -64,7 +64,7 @@ npm test
 
 1.1.2
 
-* add support for running tests through Travis CI
+* add support for Travis CI
 * add code coverage through Coveralls
 
 1.1.0
