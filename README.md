@@ -25,7 +25,7 @@ var ipMiddleware = function(req, res, next) {
 
 ## How It Works
 
-It looks for specific headers in the request and falls back some defaults if they do not exist
+It looks for specific headers in the request and falls back to some defaults if they do not exist.
 
 The following is the order we use to determine the user ip from the request.
 
