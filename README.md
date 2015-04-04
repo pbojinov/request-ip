@@ -31,8 +31,8 @@ The following is the order we use to determine the user ip from the request.
 
 1. `X-Client-IP`  
 2. `X-Forwarded-For` header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.
-3. `X-Real-IP`
-5. `X-Cluster-Client-IP`
+3. `X-Real-IP` (nginx proxy/FastCGI)
+5. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
 6. Permuations of #2 such as: `X-Forwarded`, `Forwarded-For` and `Forwarded`
 7. `req.connection.remoteAddress`
 8. `req.socket.remoteAddress`
