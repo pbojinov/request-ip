@@ -1,6 +1,6 @@
 #request-ip
 
-A tiny Node.js module to retrieve a request's IP address. 
+A tiny Node.js module for retrieving a request's IP address. 
 
 ![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=1)
 
@@ -61,6 +61,10 @@ npm test
 ```
 
 ## Release Notes
+
+1.1.2
+
+* add support for Travis CI (continuous deployment) and Coveralls (code coverage)
 
 1.1.0
 
