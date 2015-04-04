@@ -52,7 +52,9 @@ function getClientIp(req) {
     }
 
     // x-cluster-client-ip
+    // For rackspace and river bed's stingray 
     // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
+    // https://splash.riverbed.com/docs/DOC-1926
     else if (clusterClientIp) {
         ipAddress = clusterClientIp;
     }
