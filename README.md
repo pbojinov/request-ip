@@ -1,4 +1,7 @@
-request-ip
+#request-ip
+
+![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
+
 =========
 
 > A tiny Node.js module to retrieve a request's IP address. 
@@ -38,9 +41,9 @@ The following is the order we use to determine the user ip from the request.
 8. `req.socket.remoteAddress`
 9. `req.connection.socket.remoteAddress`
 
-## Use Case
+## Samples Use Cases
 
-Getting a user's IP for geolocation.
+* Getting a user's IP for geolocation.
 
 ## Dependencies
 
