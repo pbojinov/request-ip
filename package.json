@@ -1,6 +1,6 @@
 {
   "name": "request-ip",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A small node.js module to retrieve the request's IP address",
   "main": "index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/pbojinov/request-ip.git"
   },
   "scripts": {
-    "test": "node test/index.js"
+    "test": "node test/index.js | tap-spec"
   },
   "keywords": [
     "ip",
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/pbojinov/request-ip",
   "devDependencies": {
     "request": "^2.54.0",
+    "tap-spec": "^3.0.0",
     "tape": "^4.0.0"
   }
 }

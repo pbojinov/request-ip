@@ -1,7 +1,9 @@
 /**
  * Author: petar bojinov - @pbojinov
- * Date: 01/16/15
+ * Date: 04/03/15
  */
+
+'use strict';
 
 /**
  * Get client IP address

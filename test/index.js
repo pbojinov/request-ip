@@ -1,5 +1,6 @@
 var http = require('http');
 var test = require('tape');
+var tapSpec = require('tap-spec');
 var request = require('request');
 var requestIp = require('../index.js');
 
@@ -119,6 +120,84 @@ test('x-cluster-client-ip', function(t) {
         if (!error && response.statusCode === 200) {
             // make sure response ip is the same as the one we passed in
             t.equal(options.headers['x-cluster-client-ip'], body);
+            server.close();
+        }
+    }
+});
+
+test('x-forwarded', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'x-forwarded': '230.38.161.74'
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            t.equal(options.headers['x-forwarded'], body);
+            server.close();
+        }
+    }
+});
+
+test('forwarded-for', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'forwarded-for': '102.71.123.2'
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            t.equal(options.headers['forwarded-for'], body);
+            server.close();
+        }
+    }
+});
+
+test('forwarded', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'forwarded': '102.71.123.2'
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            t.equal(options.headers['forwarded'], body);
             server.close();
         }
     }
