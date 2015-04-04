@@ -65,7 +65,8 @@ test('x-forwarded-for', function(t) {
     function callback(error, response, body) {
         if (!error && response.statusCode === 200) {
             // make sure response ip is the same as the one we passed in
-            t.equal(options.headers['x-forwarded-for'], body);
+            var firstIp = options.headers['x-forwarded-for'].split(',')[0];
+            t.equal(firstIp, body);
             server.close();
         }
     }
