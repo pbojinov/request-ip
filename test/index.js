@@ -98,3 +98,27 @@ test('x-real-ip', function(t) {
     }
 });
 
+test('req.connection.remoteAddress', function(t) {
+    t.plan(1);
+    var options = {
+        url: ''
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            // t.equal(options.headers['x-real-ip'], body);
+            console.log(body);
+            server.close();
+        }
+    }
+});
+
