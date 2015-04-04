@@ -2,11 +2,7 @@
 
 ![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
 
-=========
-
-> A tiny Node.js module to retrieve a request's IP address. 
-
-> Maintainer: [Petar Bojinov](https://github.com/pbojinov)
+A tiny Node.js module to retrieve a request's IP address. 
 
 ## Installation
 
