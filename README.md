@@ -2,7 +2,7 @@
 
 A tiny Node.js module for retrieving a request's IP address. 
 
-![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=1)
+![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=2)
 
 ![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/pbojinov/request-ip/badge.svg)](https://coveralls.io/r/pbojinov/request-ip)
@@ -61,6 +61,10 @@ npm test
 ```
 
 ## Release Notes
+
+1.1.3
+
+* move Coveralls from dependencies to devDependencies, oops
 
 1.1.2
 
