@@ -38,7 +38,7 @@ The following is the order we use to determine the user ip from the request.
 8. `req.socket.remoteAddress`
 9. `req.connection.socket.remoteAddress`
 
-## Samples Use Cases
+## Example Use Cases
 
 * Getting a user's IP for geolocation.
 
@@ -48,7 +48,7 @@ None
 
 ## Running the Tests
 
-Make sure you have the necessary dependencies:
+Make sure you have the necessary dev dependencies needed to run the tests:
 
 ```
 npm install
@@ -78,6 +78,7 @@ npm test
 
 1.0.0
 
+* production ready with stable API
 * add semver
 
 0.0.4
