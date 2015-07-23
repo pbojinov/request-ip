@@ -62,11 +62,11 @@ Run the integration tests
 npm test
 ```
 
-## Release Notes (next version)
-
-* add case management where you can not find the IP address, so we returns NULL
-
 ## Release Notes
+
+1.1.4
+
+* * add case management where you can not find the IP address, so we return NULL
 
 1.1.3
 
