@@ -38,7 +38,9 @@ The following is the order we use to determine the user ip from the request.
 8. `req.socket.remoteAddress`
 9. `req.connection.socket.remoteAddress`
 
-## Example Use Cases
+If cannot find an IP address, return `null`.
+
+## Samples Use Cases
 
 * Getting a user's IP for geolocation.
 
@@ -59,6 +61,10 @@ Run the integration tests
 ```
 npm test
 ```
+
+## Release Notes (next version)
+
+* add case management where you can not find the IP address, so we returns NULL
 
 ## Release Notes
 
