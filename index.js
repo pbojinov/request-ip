@@ -80,9 +80,15 @@ function getClientIp(req) {
     // fallback to something
     if (!ipAddress) {
         // ensure getting client IP address still works in development environment
-        ipAddress = req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress; // for https
+        // if despite all this we do not find ip, then it returns null
+        try {
+            ipAddress = req.connection.remoteAddress ||
+                req.socket.remoteAddress ||
+                req.connection.socket.remoteAddress || // for https
+                null;
+        } catch(e) {
+            ipAddress = null;
+        }
     }
 
     return ipAddress;
