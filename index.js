@@ -90,6 +90,14 @@ function getClientIp(req) {
             ipAddress = null;
         }
     }
+    
+    // final attempt to get IP address, via info object within request.
+    // if despite all this we do not find ip, then it returns null.
+    if (!ipAddress) {
+        if (typeof req.info !== 'undefined'){
+            ipAddress = req.info.remoteAddress || null;
+        }
+    }
 
     return ipAddress;
 }
