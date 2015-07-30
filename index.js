@@ -117,7 +117,7 @@ exports.mw = function(options) {
     if (!options) options = {};
     var attr = options.attributeName || "clientIp";
     return function(req, res, next) {
-        req[attr] = getClientIp(req); // on localhost > 127.0.0.1
+        req[attr] = getClientIp(req);
         next();
     }
 };
