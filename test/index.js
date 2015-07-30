@@ -228,8 +228,6 @@ test('req.connection.remoteAddress', function(t) {
 
 test('request-ip.mw -', function(t) {
     t.plan(2);
-
-console.log(typeof requestIp.mw)
     
     t.equal(typeof requestIp.mw, 'function', 'requestIp.mw - should be a factory function');
     t.equal(requestIp.mw.length, 1, 'requestIp.mw expects 1 argument - options');
