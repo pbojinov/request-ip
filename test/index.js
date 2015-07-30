@@ -226,3 +226,33 @@ test('req.connection.remoteAddress', function(t) {
     }
 });
 
+test('request-ip.mw -', function(t) {
+    t.plan(2);
+
+console.log(typeof requestIp.mw)
+    
+    t.equal(typeof requestIp.mw, 'function', 'requestIp.mw - should be a factory function');
+    t.equal(requestIp.mw.length, 1, 'requestIp.mw expects 1 argument - options');
+});
+
+test('request-ip.mw - used with no arguments', function(t) {
+    t.plan(2);
+    var mw = requestIp.mw();
+    t.ok(typeof mw == 'function' && mw.length == 3, 'returns a middleware');
+    
+    var mockReq = { headers : { 'x-forwarded-for' : "111.222.111.222"} };
+    mw( mockReq, null, function() { 
+        t.equal(mockReq.clientIp, "111.222.111.222", "when used - the middleware augments the request object with attribute 'clientIp'" );  
+    });
+});
+
+test('request-ip.mw - user code customizes augmented attribute name', function(t) {
+    t.plan(2);
+    var mw = requestIp.mw({ attributeName : "realIp" });
+    t.ok(typeof mw == 'function' && mw.length == 3, 'returns a middleware');
+    
+    var mockReq = { headers : { 'x-forwarded-for' : "111.222.111.222"} };
+    mw( mockReq, null, function() { 
+        t.equal(mockReq.realIp, "111.222.111.222", "when used - the middleware augments the request object with attribute name provided by user-code" );  
+    });
+});
