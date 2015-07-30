@@ -95,6 +95,19 @@ function getClientIp(req) {
 }
 
 /**
+ * Expose a default implemtation for a connect middleware
+ * 
+ * @options.attributeName - name of attribute to augment request object with
+ */
+getClientIp.mw = function(options) {
+    var attr = options.attributeName || "clientIp";
+    return function(req, res, next) {
+        req[attr] = requestIp.getClientIp(req); // on localhost > 127.0.0.1
+        next();
+    }
+};
+
+/**
  * Expose mode public functions
  */
 exports.getClientIp = getClientIp;
