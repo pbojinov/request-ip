@@ -18,7 +18,7 @@
 function getClientIp(req) {
 
     // the ipAddress we return
-    var ipAddress;
+    var ipAddress = null;
 
     // workaround to get real client IP
     // most likely because our app will be behind a [reverse] proxy or load balancer
@@ -29,7 +29,15 @@ function getClientIp(req) {
         clusterClientIp = req.headers['x-cluster-client-ip'],
         forwardedAlt = req.headers['x-forwarded'],
         forwardedFor = req.headers['forwarded-for'],
-        forwarded = req.headers['forwarded'];
+        forwarded = req.headers['forwarded'],
+        
+        // remote address check
+        reqConRA = req.connection ? req.connection.remoteAddress
+                                  : null,
+        reqSockRA = req.socket ? req.socket.remoteAddress
+                               : null,
+        reqConSockRA = req.info ? req.info.remoteAddress
+                                : null;
 
     // x-client-ip
     if (clientIp) {
@@ -77,26 +85,15 @@ function getClientIp(req) {
         ipAddress = forwarded;
     }
 
-    // fallback to something
-    if (!ipAddress) {
-        // ensure getting client IP address still works in development environment
-        // if despite all this we do not find ip, then it returns null
-        try {
-            ipAddress = req.connection.remoteAddress ||
-                req.socket.remoteAddress ||
-                req.connection.socket.remoteAddress || // for https
-                null;
-        } catch(e) {
-            ipAddress = null;
-        }
+    // remote address
+    else if (reqConRA) {
+        ipAddress = reqConRA;
     }
-    
-    // final attempt to get IP address, via info object within request.
-    // if despite all this we do not find ip, then it returns null.
-    if (!ipAddress) {
-        if (typeof req.info !== 'undefined'){
-            ipAddress = req.info.remoteAddress || null;
-        }
+    else if (reqSockRA) {
+        ipAddress = reqSockRA
+    }
+    else if (reqConSockRA) {
+        ipAddress = reqConSockRA
     }
 
     return ipAddress;
