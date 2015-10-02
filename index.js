@@ -36,7 +36,9 @@ function getClientIp(req) {
                                   : null,
         reqSockRA = req.socket ? req.socket.remoteAddress
                                : null,
-        reqConSockRA = req.info ? req.info.remoteAddress
+        reqConSockRA = (req.connection && req.connection.socket) ? req.connection.socket.remoteAddress
+                                                                 : null,
+        reqInfoRA = req.info ? req.info.remoteAddress
                                 : null;
 
     // x-client-ip
@@ -95,7 +97,10 @@ function getClientIp(req) {
     else if (reqConSockRA) {
         ipAddress = reqConSockRA
     }
-
+    else if (reqInfoRA) {
+        ipAddress = reqInfoRA
+    }
+    
     return ipAddress;
 }
 
