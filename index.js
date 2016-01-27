@@ -1,6 +1,6 @@
 /**
  * Author: petar bojinov - @pbojinov
- * Date: 04/03/15
+ * Date: 01/27/16
  */
 
 'use strict';
@@ -106,3 +106,18 @@ function getClientIp(req) {
  * Expose mode public functions
  */
 exports.getClientIp = getClientIp;
+
+
+/**
+ * Expose a default implemtation for a connect middleware
+ * 
+ * @options.attributeName - name of attribute to augment request object with
+ */
+exports.mw = function(options) {
+    if (!options) options = {};
+    var attr = options.attributeName || "clientIp";
+    return function(req, res, next) {
+        req[attr] = getClientIp(req);
+        next();
+    }
+};

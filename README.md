@@ -18,10 +18,29 @@ var requestIp = require('request-ip');
 
 // inside middleware handler
 var ipMiddleware = function(req, res, next) {
-    var clientIp = requestIp.getClientIp(req); // on localhost > 127.0.0.1
+    var clientIp = requestIp.getClientIp(req); 
     next();
 };
+
+// on localhost you'll see 127.0.0.1 if you're using IPv4 
+// or ::1, ::ffff:127.0.0.1 if you're using IPv6
 ```
+
+### As Connect Middleware
+
+```javascript
+var requestIp = require('request-ip');
+app.use(requestIp.mw())
+
+app.use(function(req, res) {
+    var ip = req.clientIp;
+    res.end(ip);
+});
+```
+
+To see a full working code for the middleware, check out the [examples](https://github.com/pbojinov/request-ip/tree/master/examples) folder.
+
+The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings. 
 
 ## How It Works
 
@@ -38,7 +57,7 @@ The following is the order we use to determine the user ip from the request.
 8. `req.socket.remoteAddress`
 9. `req.connection.socket.remoteAddress`
 
-If cannot find an IP address, return `null`.
+If cannot find an IP address, it will return `null`.
 
 ## Samples Use Cases
 
@@ -64,46 +83,12 @@ npm test
 
 ## Release Notes
 
-1.1.4
+See the wonderful [changelog](https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md)
 
-* * add case management where you can not find the IP address, so we return NULL
+## Contributors
 
-1.1.3
-
-* move Coveralls from dependencies to devDependencies, oops
-
-1.1.2
-
-* add support for Travis CI
-* add code coverage through Coveralls
-
-1.1.0
-
-* add support for X-Cluster-Client-IP, X-Forwarded, Forwarded-For, Forwarded
-* add tests
-
-1.0.0
-
-* production ready with stable API
-* add semver
-
-0.0.4
-
-* add support for X-Real-Ip
-* bug fixes
-
-0.0.3
-
-* improve docs
-
-0.0.2
-
-* bug fix
-
-0.0.1
-
-* initial release
+Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
 
 ## License
 
-The MIT License (MIT)
+The MIT License (MIT) - 2016
