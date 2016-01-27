@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
-
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.0...HEAD)
+## [1.2.1](https://github.com/pbojinov/request-ip/tree/1.2.1) (2016-01-27)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.0...1.2.1)
 
 **Merged pull requests:**
 
@@ -13,6 +12,7 @@
 
 **Merged pull requests:**
 
+- Cleanup [\#13](https://github.com/pbojinov/request-ip/pull/13) ([minecrawler](https://github.com/minecrawler))
 - Got it working in a case that was returning null [\#11](https://github.com/pbojinov/request-ip/pull/11) ([andfaulkner](https://github.com/andfaulkner))
 
 ## [1.1.4](https://github.com/pbojinov/request-ip/tree/1.1.4) (2015-07-23)

@@ -8,7 +8,8 @@
     "url": "https://github.com/pbojinov/request-ip.git"
   },
   "scripts": {
-    "test": "node test/index.js | tap-spec"
+    "test": "node test/index.js | tap-spec",
+    "changelog": "github_changelog_generator -t 4c910e93a260e924d44e800b1a4345bf1115c532"
   },
   "keywords": [
     "ip",

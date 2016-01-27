@@ -85,7 +85,7 @@ npm test
 
 See the wonderful [changelog](https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md)
 
-To generate a new changelog, run [github_changelog_generator](https://github.com/skywinder/github-changelog-generator).
+To easily generate a new changelog, install [github-changelog-generator](https://github.com/skywinder/github-changelog-generator) then run `npm run changelog`.
 
 ## Contributors
 
