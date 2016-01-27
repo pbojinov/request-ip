@@ -18,28 +18,25 @@
 function getClientIp(req) {
 
     // the ipAddress we return
-    var ipAddress = null;
+    var ipAddress;
 
     // workaround to get real client IP
     // most likely because our app will be behind a [reverse] proxy or load balancer
-    var clientIp = req.headers['x-client-ip'],
-        forwardedForAlt = req.headers['x-forwarded-for'],
-        realIp = req.headers['x-real-ip'],
-        // more obsure ones below
-        clusterClientIp = req.headers['x-cluster-client-ip'],
-        forwardedAlt = req.headers['x-forwarded'],
-        forwardedFor = req.headers['forwarded-for'],
-        forwarded = req.headers['forwarded'],
+    var clientIp = req.headers['x-client-ip'];
+    var forwardedForAlt = req.headers['x-forwarded-for'];
+    var realIp = req.headers['x-real-ip'];
+    
+    // more obsure ones below
+    var clusterClientIp = req.headers['x-cluster-client-ip'];
+    var forwardedAlt = req.headers['x-forwarded'];
+    var forwardedFor = req.headers['forwarded-for'];
+    var forwarded = req.headers['forwarded'];
         
-        // remote address check
-        reqConRA = req.connection ? req.connection.remoteAddress
-                                  : null,
-        reqSockRA = req.socket ? req.socket.remoteAddress
-                               : null,
-        reqConSockRA = (req.connection && req.connection.socket) ? req.connection.socket.remoteAddress
-                                                                 : null,
-        reqInfoRA = req.info ? req.info.remoteAddress
-                                : null;
+    // remote address check
+    var reqConnectionRemoteAddress = req.connection ? req.connection.remoteAddress : null;
+    var reqSocketRemoteAddress = req.socket ? req.socket.remoteAddress : null;
+    var reqConnectionSocketRemoteAddress = (req.connection && req.connection.socket) ? req.connection.socket.remoteAddress : null;
+    var reqInfoRemoteAddress = req.info ? req.info.remoteAddress : null;
 
     // x-client-ip
     if (clientIp) {
@@ -87,18 +84,23 @@ function getClientIp(req) {
         ipAddress = forwarded;
     }
 
-    // remote address
-    else if (reqConRA) {
-        ipAddress = reqConRA;
+    // remote address checks
+    else if (reqConnectionRemoteAddress) {
+        ipAddress = reqConnectionRemoteAddress;
     }
-    else if (reqSockRA) {
-        ipAddress = reqSockRA
+    else if (reqSocketRemoteAddress) {
+        ipAddress = reqSocketRemoteAddress
     }
-    else if (reqConSockRA) {
-        ipAddress = reqConSockRA
+    else if (reqConnectionSocketRemoteAddress) {
+        ipAddress = reqConnectionSocketRemoteAddress
     }
-    else if (reqInfoRA) {
-        ipAddress = reqInfoRA
+    else if (reqInfoRemoteAddress) {
+        ipAddress = reqInfoRemoteAddress
+    } 
+
+    // return null if we cannot find an address
+    else {
+        ipAddress = null;
     }
     
     return ipAddress;
