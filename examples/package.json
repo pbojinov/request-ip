@@ -1,0 +1,12 @@
+{
+  "name": "request-ip-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "connect-middleware-simple.js",
+  "author": "Petar Bojinov <petarbojinov@gmail.com> (https://github.com/pbojinov)",
+  "license": "MIT",
+  "dependencies": {
+    "connect": "^3.4.1",
+    "request-ip": "^1.2.0"
+  }
+}
