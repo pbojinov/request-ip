@@ -56,6 +56,7 @@ The following is the order we use to determine the user ip from the request.
 7. `req.connection.remoteAddress`
 8. `req.socket.remoteAddress`
 9. `req.connection.socket.remoteAddress`
+10. `req.info.remoteAddress`
 
 If cannot find an IP address, it will return `null`.
 
