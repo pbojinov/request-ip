@@ -85,6 +85,8 @@ npm test
 
 See the wonderful [changelog](https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md)
 
+To generate a new changelog, run [github_changelog_generator](https://github.com/skywinder/github-changelog-generator).
+
 ## Contributors
 
 Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.

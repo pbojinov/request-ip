@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.1.4...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.0...HEAD)
+
+**Merged pull requests:**
+
+- introduce a built-in default implementation for a connect-middleware [\#12](https://github.com/pbojinov/request-ip/pull/12) ([osherx](https://github.com/osherx))
+
+## [1.2.0](https://github.com/pbojinov/request-ip/tree/1.2.0) (2016-01-27)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.1.4...1.2.0)
 
 **Merged pull requests:**
 
