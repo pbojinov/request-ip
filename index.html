@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Request-ip by pbojinov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Request-ip</h1>
+      <h2 class="project-tagline">A tiny node.js module for retrieving a request&#39;s IP address.</h2>
+      <a href="https://github.com/pbojinov/request-ip" class="btn">View on GitHub</a>
+      <a href="https://github.com/pbojinov/request-ip/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/pbojinov/request-ip/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="request-ip" class="anchor" href="#request-ip" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>request-ip</h1>
+
+<p>A tiny Node.js module for retrieving a request's IP address. </p>
+
+<p><img src="https://nodei.co/npm/request-ip.png?downloads=true&amp;cacheBust=2" alt=""></p>
+
+<p><img src="https://travis-ci.org/pbojinov/request-ip.svg?branch=master" alt="">
+<a href="https://coveralls.io/r/pbojinov/request-ip"><img src="https://coveralls.io/repos/pbojinov/request-ip/badge.svg" alt="Coverage Status"></a></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>npm install request-ip --save
+</code></pre>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> requestIp <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>request-ip<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// inside middleware handler</span>
+<span class="pl-k">var</span> <span class="pl-en">ipMiddleware</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>, <span class="pl-smi">next</span>) {
+    <span class="pl-k">var</span> clientIp <span class="pl-k">=</span> <span class="pl-smi">requestIp</span>.<span class="pl-en">getClientIp</span>(req); 
+    <span class="pl-en">next</span>();
+};
+
+<span class="pl-c">// on localhost you'll see 127.0.0.1 if you're using IPv4 </span>
+<span class="pl-c">// or ::1, ::ffff:127.0.0.1 if you're using IPv6</span></pre></div>
+
+<h3>
+<a id="as-connect-middleware" class="anchor" href="#as-connect-middleware" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>As Connect Middleware</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> requestIp <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>request-ip<span class="pl-pds">'</span></span>);
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-smi">requestIp</span>.<span class="pl-en">mw</span>())
+
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-k">function</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>) {
+    <span class="pl-k">var</span> ip <span class="pl-k">=</span> <span class="pl-smi">req</span>.<span class="pl-smi">clientIp</span>;
+    <span class="pl-smi">res</span>.<span class="pl-en">end</span>(ip);
+});</pre></div>
+
+<p>To see a full working code for the middleware, check out the <a href="https://github.com/pbojinov/request-ip/tree/master/examples">examples</a> folder.</p>
+
+<p>The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings. </p>
+
+<h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How It Works</h2>
+
+<p>It looks for specific headers in the request and falls back to some defaults if they do not exist.</p>
+
+<p>The following is the order we use to determine the user ip from the request.</p>
+
+<ol>
+<li>
+<code>X-Client-IP</code><br>
+</li>
+<li>
+<code>X-Forwarded-For</code> header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.</li>
+<li>
+<code>X-Real-IP</code> (nginx proxy/FastCGI)</li>
+<li>
+<code>X-Cluster-Client-IP</code> (Rackspace LB, Riverbed Stingray)</li>
+<li>Permuations of #2 such as: <code>X-Forwarded</code>, <code>Forwarded-For</code> and <code>Forwarded</code>
+</li>
+<li><code>req.connection.remoteAddress</code></li>
+<li><code>req.socket.remoteAddress</code></li>
+<li><code>req.connection.socket.remoteAddress</code></li>
+<li><code>req.info.remoteAddress</code></li>
+</ol>
+
+<p>If cannot find an IP address, it will return <code>null</code>.</p>
+
+<h2>
+<a id="samples-use-cases" class="anchor" href="#samples-use-cases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Samples Use Cases</h2>
+
+<ul>
+<li>Getting a user's IP for geolocation.</li>
+</ul>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>None</p>
+
+<h2>
+<a id="running-the-tests" class="anchor" href="#running-the-tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running the Tests</h2>
+
+<p>Make sure you have the necessary dev dependencies needed to run the tests:</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>Run the integration tests</p>
+
+<pre><code>npm test
+</code></pre>
+
+<h2>
+<a id="release-notes" class="anchor" href="#release-notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Release Notes</h2>
+
+<p>See the wonderful <a href="https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md">changelog</a></p>
+
+<p>To easily generate a new changelog, install <a href="https://github.com/skywinder/github-changelog-generator">github-changelog-generator</a> then run <code>npm run changelog</code>.</p>
+
+<h2>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributors</h2>
+
+<p>Thanks to <a href="https://github.com/osherx">@osherx</a> for adding the connect-middleware.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>The MIT License (MIT) - 2016</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/pbojinov/request-ip">Request-ip</a> is maintained by <a href="https://github.com/pbojinov">pbojinov</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
