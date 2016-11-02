@@ -44,11 +44,13 @@ function getClientIp(req) {
     }
 
     // x-forwarded-for
+    // (typically when your node app is behind a load-balancer (eg. AWS ELB) or proxy)
     else if (forwardedForAlt) {
-        // x-forwarded-for header is more common
-        // it may return multiple IP addresses in the format: 
+        // x-forwarded-for may return multiple IP addresses in the format: 
         // "client IP, proxy 1 IP, proxy 2 IP" 
-        // we pick the first one
+        // Therefore, the right-most IP address is the IP address of the most recent proxy 
+        // and the left-most IP address is the IP address of the originating client.
+        // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
         var forwardedIps = forwardedForAlt.split(',');
         ipAddress = forwardedIps[0];
     }
@@ -56,8 +58,7 @@ function getClientIp(req) {
     // x-real-ip 
     // (default nginx proxy/fcgi)
     else if (realIp) {
-        // alternative to x-forwarded-for
-        // used by some proxies
+        // alternative to x-forwarded-for, used by some proxies
         ipAddress = realIp;
     }
 

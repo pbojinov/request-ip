@@ -254,3 +254,41 @@ test('request-ip.mw - user code customizes augmented attribute name', function(t
         t.equal(mockReq.realIp, "111.222.111.222", "when used - the middleware augments the request object with attribute name provided by user-code" );  
     });
 });
+
+test('android request to AWS EBS app (x-forwarded-for)', function(t) {
+    t.plan(1);
+    // 172.x.x.x and 192.x.x.x. are considered "private IP subnets"
+    // so we want to library to return "107.77.213.113" as the IP address
+    // https://tools.ietf.org/html/rfc1918#section-3
+    var expectedResult = '107.77.213.113';
+    var options = {
+        url: '',
+        headers: {
+            "host": "[redacted]",
+            "x-real-ip": "172.31.41.116",
+            "x-forwarded-for": "107.77.213.113, 172.31.41.116",
+            "accept-encoding": "gzip",
+            "user-agent": "okhttp/3.4.1",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // ip address should be equal to the first "x-forwarded-for" value
+            // console.log(body)
+            // t.comment(body)
+            t.equal(expectedResult, body);
+            server.close();
+        }
+    }
+});

@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.2...HEAD)
+
+**Closed issues:**
+
+- Are there any security concerns when saving the IP directly to a database? [\#16](https://github.com/pbojinov/request-ip/issues/16)
+- I'm not getting local host ip address 127.0.0.1 [\#14](https://github.com/pbojinov/request-ip/issues/14)
+
+## [1.2.2](https://github.com/pbojinov/request-ip/tree/1.2.2) (2016-01-27)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.1...1.2.2)
+
 ## [1.2.1](https://github.com/pbojinov/request-ip/tree/1.2.1) (2016-01-27)
 [Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.0...1.2.1)
 

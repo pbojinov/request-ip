@@ -1,6 +1,6 @@
 {
   "name": "request-ip",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "A small node.js module to retrieve the request's IP address",
   "main": "index.js",
   "repository": {
@@ -12,16 +12,17 @@
     "changelog": "github_changelog_generator -t 4c910e93a260e924d44e800b1a4345bf1115c532"
   },
   "keywords": [
+    "request ip",
     "ip",
     "address",
+    "request",
     "client",
     "header",
     "X-Real-IP",
     "X-Client-IP",
     "X-Forwarded-For",
     "connection.remoteAddress",
-    "middleware",
-    "request"
+    "middleware"
   ],
   "author": "Petar Bojinov <petarbojinov@gmail.com>",
   "license": "MIT",
@@ -36,6 +37,5 @@
     "tape": "^4.0.0",
     "coveralls": "^2.11.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
