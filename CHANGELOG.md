@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
-
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.2...HEAD)
+## [1.2.3](https://github.com/pbojinov/request-ip/tree/1.2.3) (2016-11-02)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.2...1.2.3)
 
 **Closed issues:**
 
