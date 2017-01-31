@@ -23,7 +23,7 @@ function getClientIp(req) {
     // workaround to get real client IP
     // most likely because our app will be behind a [reverse] proxy or load balancer
     var clientIp = req.headers['x-client-ip'];
-    var forwardedForAlt = req.headers['x-forwarded-for'];
+    var forwardedForAlt = parseForwardedForAlt(req.headers['x-forwarded-for']);
     var realIp = req.headers['x-real-ip'];
     
     // more obsure ones below
@@ -46,13 +46,7 @@ function getClientIp(req) {
     // x-forwarded-for
     // (typically when your node app is behind a load-balancer (eg. AWS ELB) or proxy)
     else if (forwardedForAlt) {
-        // x-forwarded-for may return multiple IP addresses in the format: 
-        // "client IP, proxy 1 IP, proxy 2 IP" 
-        // Therefore, the right-most IP address is the IP address of the most recent proxy 
-        // and the left-most IP address is the IP address of the originating client.
-        // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
-        var forwardedIps = forwardedForAlt.split(',');
-        ipAddress = forwardedIps[0];
+        ipAddress = forwardedForAlt;
     }
 
     // x-real-ip 
@@ -105,6 +99,26 @@ function getClientIp(req) {
     }
     
     return ipAddress;
+}
+
+function parseForwardedForAlt(forwardedForAlt) {
+    if (!forwardedForAlt) {
+        return;
+    }
+    // x-forwarded-for may return multiple IP addresses in the format:
+    // "client IP, proxy 1 IP, proxy 2 IP"
+    // Therefore, the right-most IP address is the IP address of the most recent proxy
+    // and the left-most IP address is the IP address of the originating client.
+    // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
+    var forwardedIps = forwardedForAlt.split(',');
+    // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
+    // Therefore taking the left-most IP address that is not unknown
+    for (var i = 0; i < forwardedIps.length; ++i) {
+        let ipAddress = forwardedIps[i].trim();
+        if (ipAddress && ipAddress !== 'unknown') {
+            return ipAddress;
+        }
+    }
 }
 
 /**
