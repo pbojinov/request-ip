@@ -114,7 +114,7 @@ function parseForwardedForAlt(forwardedForAlt) {
     // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
     // Therefore taking the left-most IP address that is not unknown
     for (var i = 0; i < forwardedIps.length; ++i) {
-        let ipAddress = forwardedIps[i].trim();
+        var ipAddress = forwardedIps[i].trim();
         if (ipAddress && ipAddress !== 'unknown') {
             return ipAddress;
         }
