@@ -26,12 +26,20 @@ function getClientIp(req) {
     var forwardedForAlt = req.headers['x-forwarded-for'];
     var realIp = req.headers['x-real-ip'];
     
-    // more obsure ones below
+    // more obscure ones below
     var clusterClientIp = req.headers['x-cluster-client-ip'];
     var forwardedAlt = req.headers['x-forwarded'];
     var forwardedFor = req.headers['forwarded-for'];
     var forwarded = req.headers['forwarded'];
-        
+
+    // Cloudflare.
+    // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
+    // CF-Connecting-IP - applied to every request to the origin.
+    var cfConnectingIp = req.headers['cf-connecting-ip'];
+
+    // Akamai and Cloudflare: True-Client-IP.
+    var trueClientIp = req.headers['true-client-ip'];
+
     // remote address check
     var reqConnectionRemoteAddress = req.connection ? req.connection.remoteAddress : null;
     var reqSocketRemoteAddress = req.socket ? req.socket.remoteAddress : null;
@@ -41,6 +49,14 @@ function getClientIp(req) {
     // x-client-ip
     if (clientIp) {
         ipAddress = clientIp;
+    }
+
+    else if (cfConnectingIp) {
+        ipAddress = cfConnectingIp;
+    }
+
+    else if (trueClientIp) {
+        ipAddress = trueClientIp;
     }
 
     // x-forwarded-for

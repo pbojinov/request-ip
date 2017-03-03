@@ -73,6 +73,52 @@ test('x-forwarded-for', function(t) {
     }
 });
 
+test('cf-connecting-ip', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'cf-connecting-ip': '8.8.8.8'
+        }
+    };
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            t.equal(options.headers['cf-connecting-ip'], body);
+            server.close();
+        }
+    }
+});
+
+test('true-client-ip', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'true-client-ip': '8.8.8.8'
+        }
+    };
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            t.equal(options.headers['true-client-ip'], body);
+            server.close();
+        }
+    }
+});
+
 test('x-real-ip', function(t) {
     t.plan(1);
     var options = {
