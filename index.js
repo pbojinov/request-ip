@@ -113,8 +113,10 @@ function parseForwardedForAlt(forwardedForAlt) {
     var forwardedIps = forwardedForAlt.split(',');
     // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
     // Therefore taking the left-most IP address that is not unknown
+    // A Squid configuration directive can also set the value to "unknown" (http://www.squid-cache.org/Doc/config/forwarded_for/)
     for (var i = 0; i < forwardedIps.length; ++i) {
         var ipAddress = forwardedIps[i].trim();
+        console.log('ipAddress');
         if (ipAddress && ipAddress !== 'unknown') {
             return ipAddress;
         }

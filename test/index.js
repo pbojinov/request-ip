@@ -66,8 +66,35 @@ test('x-forwarded-for', function(t) {
     function callback(error, response, body) {
         if (!error && response.statusCode === 200) {
             // make sure response ip is the same as the one we passed in
-            var firstIp = options.headers['x-forwarded-for'].split(',')[0];
+            var firstIp = options.headers['x-forwarded-for'].split(',')[0].trim();
             t.equal(firstIp, body);
+            server.close();
+        }
+    }
+});
+
+test('x-forwarded-for with unknown first ip', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'x-forwarded-for': 'unknown, 93.186.30.120'
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            var secondIp = options.headers['x-forwarded-for'].split(',')[1].trim();
+            t.equal(secondIp, body);
             server.close();
         }
     }
