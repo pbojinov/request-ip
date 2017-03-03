@@ -17,6 +17,96 @@ function serverFactory() {
     });
 }
 
+test('req.headers is undefined', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'x-testing-null-condition-so-delete-everything': true
+        }
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    // node listens on a random port when using 0
+    // http://stackoverflow.com/questions/9901043/how-does-node-js-choose-random-ports
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        // we can't make the request URL until we get the port number from the new server
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        /*
+            ------------------------------------------------------------------
+            Example Server Response (response)
+            You can inspect it using: t.comment(JSON.stringify(response));
+            ------------------------------------------------------------------
+            {
+                "body": "",
+                "headers": {
+                    "connection": "close",
+                    "content-length": "0",
+                    "date": "Fri, 03 Mar 2017 21:24:12 GMT"
+                },
+                "request": {
+                    "headers": {
+                        "x-testing-null-condition-so-delete-everything": true
+                    },
+                    "method": "GET",
+                    "uri": {
+                        "auth": null,
+                        "hash": null,
+                        "host": "127.0.0.1:56558",
+                        "hostname": "127.0.0.1",
+                        "href": "http://127.0.0.1:56558/",
+                        "path": "/",
+                        "pathname": "/",
+                        "port": "56558",
+                        "protocol": "http:",
+                        "query": null,
+                        "search": null,
+                        "slashes": true
+                    }
+                },
+                "statusCode": 200
+            }
+        */
+        if (!error && response.statusCode === 200) {
+            t.equal("", body);
+            server.close();
+        }
+    }
+});
+
+test('req.connection.remoteAddress', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: undefined
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    var server = new serverFactory();
+    // node listens on a random port when using 0
+    // http://stackoverflow.com/questions/9901043/how-does-node-js-choose-random-ports
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        // we can't make the request URL until we get the port number from the new server
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            // make sure response ip is the same as the one we passed in
+            t.equal(serverInfo.host, body);
+            server.close();
+        }
+    }
+});
+
 test('x-client-ip', function(t) {
     t.plan(1);
     var options = {
