@@ -1,5 +1,20 @@
 # Change Log
 
+## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.3...HEAD)
+
+**Closed issues:**
+
+- Support Cloudflare? [\#20](https://github.com/pbojinov/request-ip/issues/20)
+- How to receive IP in client [\#17](https://github.com/pbojinov/request-ip/issues/17)
+- optimized your code a bit \(no need to evalutate every option before choosing first one that matches. just evaluate then return on first match\) [\#15](https://github.com/pbojinov/request-ip/issues/15)
+
+**Merged pull requests:**
+
+- Return once we find something and don't crash if req.headers is undefined [\#19](https://github.com/pbojinov/request-ip/pull/19) ([rokob](https://github.com/rokob))
+- Ignore 'unknown' ip addresses in X-Forwarded-For header [\#18](https://github.com/pbojinov/request-ip/pull/18) ([raunc](https://github.com/raunc))
+
 ## [1.2.3](https://github.com/pbojinov/request-ip/tree/1.2.3) (2016-11-02)
 [Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.2...1.2.3)
 

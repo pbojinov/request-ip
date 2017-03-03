@@ -34,6 +34,7 @@ function getClientIp(req) {
     // most likely because our app will be behind a [reverse] proxy or load balancer
     if (req.headers) {
 
+        // Amazon EC2 / Heroku workaround to get real client IP
         if ((ipAddress = req.headers['x-client-ip'])) {
             return ipAddress;
         }
