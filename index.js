@@ -17,88 +17,80 @@
  */
 function getClientIp(req) {
 
+    // TESTING FLAG
+    // custom header passed to app to delete all request attributes we look for
+    // we do this so we can test the scenario where nothing exists and we return null
+    if (req && req.headers && req.headers['x-testing-null-condition-so-delete-everything']) {
+        delete req.headers;
+        delete req.connection;
+        delete req.socket;
+        delete req.info;
+    }
+
     // the ipAddress we return
     var ipAddress;
 
     // workaround to get real client IP
     // most likely because our app will be behind a [reverse] proxy or load balancer
-    var clientIp = req.headers['x-client-ip'];
-    var forwardedForAlt = parseForwardedForAlt(req.headers['x-forwarded-for']);
-    var realIp = req.headers['x-real-ip'];
-    
-    // more obsure ones below
-    var clusterClientIp = req.headers['x-cluster-client-ip'];
-    var forwardedAlt = req.headers['x-forwarded'];
-    var forwardedFor = req.headers['forwarded-for'];
-    var forwarded = req.headers['forwarded'];
-        
+    if (req.headers) {
+
+        if ((ipAddress = req.headers['x-client-ip'])) {
+            return ipAddress;
+        }
+
+        // (typically when your node app is behind a load-balancer (eg. AWS ELB) or proxy)
+        if ((ipAddress = parseForwardedForAlt(req.headers['x-forwarded-for']))) {
+            return ipAddress;
+        }
+
+        // (default nginx proxy/fcgi)
+        // alternative to x-forwarded-for, used by some proxies
+        if ((ipAddress = req.headers['x-real-ip'])) {
+            return ipAddress;
+        }
+
+        // (Rackspace LB and Riverbed's Stingray)
+        // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
+        // https://splash.riverbed.com/docs/DOC-1926
+        if ((ipAddress = req.headers['x-cluster-client-ip'])) {
+            return ipAddress;
+        }
+
+        if ((ipAddress = req.headers['x-forwarded'])) {
+            return ipAddress;
+        }
+
+        if ((ipAddress = req.headers['forwarded-for'])) {
+            return ipAddress;
+        }
+
+        if ((ipAddress = req.headers['forwarded'])) {
+            return ipAddress;
+        }
+    }
+
     // remote address check
     var reqConnectionRemoteAddress = req.connection ? req.connection.remoteAddress : null;
     var reqSocketRemoteAddress = req.socket ? req.socket.remoteAddress : null;
     var reqConnectionSocketRemoteAddress = (req.connection && req.connection.socket) ? req.connection.socket.remoteAddress : null;
     var reqInfoRemoteAddress = req.info ? req.info.remoteAddress : null;
 
-    // x-client-ip
-    if (clientIp) {
-        ipAddress = clientIp;
-    }
-
-    // x-forwarded-for
-    // (typically when your node app is behind a load-balancer (eg. AWS ELB) or proxy)
-    else if (forwardedForAlt) {
-        ipAddress = forwardedForAlt;
-    }
-
-    // x-real-ip 
-    // (default nginx proxy/fcgi)
-    else if (realIp) {
-        // alternative to x-forwarded-for, used by some proxies
-        ipAddress = realIp;
-    }
-
-    // x-cluster-client-ip 
-    // (Rackspace LB and Riverbed's Stingray)
-    // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
-    // https://splash.riverbed.com/docs/DOC-1926
-    else if (clusterClientIp) {
-        ipAddress = clusterClientIp;
-    }
-
-    // x-forwarded
-    else if (forwardedAlt) {
-        ipAddress = forwardedAlt;
-    }
-
-    // forwarded-for
-    else if (forwardedFor) {
-        ipAddress = forwardedFor;
-    }
-
-    // forwarded
-    else if (forwarded) {
-        ipAddress = forwarded;
-    }
-
     // remote address checks
-    else if (reqConnectionRemoteAddress) {
-        ipAddress = reqConnectionRemoteAddress;
+    if ((ipAddress = req.connection && req.connection.remoteAddress)) {
+        return ipAddress;
     }
-    else if (reqSocketRemoteAddress) {
-        ipAddress = reqSocketRemoteAddress
+    if ((ipAddress = req.socket && req.socket.remoteAddress)) {
+        return ipAddress;
     }
-    else if (reqConnectionSocketRemoteAddress) {
-        ipAddress = reqConnectionSocketRemoteAddress
+    if ((ipAddress = req.connection && req.connection.socket && req.connection.socket.remoteAddress)) {
+        return ipAddress;
     }
-    else if (reqInfoRemoteAddress) {
-        ipAddress = reqInfoRemoteAddress
+    if ((ipAddress = req.info && req.info.remoteAddress)) {
+        return ipAddress;
     } 
 
     // return null if we cannot find an address
-    else {
-        ipAddress = null;
-    }
-    
-    return ipAddress;
+    return null;
 }
 
 function parseForwardedForAlt(forwardedForAlt) {
@@ -116,12 +108,12 @@ function parseForwardedForAlt(forwardedForAlt) {
     // A Squid configuration directive can also set the value to "unknown" (http://www.squid-cache.org/Doc/config/forwarded_for/)
     for (var i = 0; i < forwardedIps.length; ++i) {
         var ipAddress = forwardedIps[i].trim();
-        console.log('ipAddress');
         if (ipAddress && ipAddress !== 'unknown') {
             return ipAddress;
         }
     }
 }
+
 
 /**
  * Expose mode public functions
