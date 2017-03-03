@@ -43,6 +43,18 @@ function getClientIp(req) {
             return ipAddress;
         }
 
+        // Cloudflare.
+        // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
+        // CF-Connecting-IP - applied to every request to the origin.
+        if ((ipAddress = req.headers['cf-connecting-ip'])) {
+            return ipAddress
+        }
+
+        // Akamai and Cloudflare: True-Client-IP.
+        if ((ipAddress = req.headers['true-client-ip'])) {
+            return ipAddress
+        }
+
         // (default nginx proxy/fcgi)
         // alternative to x-forwarded-for, used by some proxies
         if ((ipAddress = req.headers['x-real-ip'])) {

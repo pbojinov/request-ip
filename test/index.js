@@ -80,32 +80,7 @@ test('req.headers is undefined', function(t) {
     }
 });
 
-test('req.connection.remoteAddress', function(t) {
-    t.plan(1);
-    var options = {
-        url: '',
-        headers: undefined
-    };
-    // create new server for each test so we can easily close it after the test is done
-    // prevents tests from hanging and competing against closing a global server
-    var server = new serverFactory();
-    // node listens on a random port when using 0
-    // http://stackoverflow.com/questions/9901043/how-does-node-js-choose-random-ports
-    server.listen(0, serverInfo.host);
-    server.on('listening', function() {
-        // we can't make the request URL until we get the port number from the new server
-        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
-        request(options, callback);
-    });
 
-    function callback(error, response, body) {
-        if (!error && response.statusCode === 200) {
-            // make sure response ip is the same as the one we passed in
-            t.equal(serverInfo.host, body);
-            server.close();
-        }
-    }
-});
 
 test('x-client-ip', function(t) {
     t.plan(1);
@@ -185,6 +160,52 @@ test('x-forwarded-for with unknown first ip', function(t) {
             // make sure response ip is the same as the one we passed in
             var secondIp = options.headers['x-forwarded-for'].split(',')[1].trim();
             t.equal(secondIp, body);
+            server.close();
+        }
+    }
+});
+
+test('cf-connecting-ip', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'cf-connecting-ip': '8.8.8.8'
+        }
+    };
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            t.equal(options.headers['cf-connecting-ip'], body);
+            server.close();
+        }
+    }
+});
+
+test('true-client-ip', function(t) {
+    t.plan(1);
+    var options = {
+        url: '',
+        headers: {
+            'true-client-ip': '8.8.8.8'
+        }
+    };
+    var server = new serverFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', function() {
+        options.url = 'http://' + serverInfo.host + ':' + server.address().port;
+        request(options, callback);
+    });
+
+    function callback(error, response, body) {
+        if (!error && response.statusCode === 200) {
+            t.equal(options.headers['true-client-ip'], body);
             server.close();
         }
     }
