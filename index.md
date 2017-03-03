@@ -49,16 +49,18 @@ It looks for specific headers in the request and falls back to some defaults if 
 The following is the order we use to determine the user ip from the request.
 
 1. `X-Client-IP`  
-2. `X-Forwarded-For` header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.
-3. `X-Real-IP` (nginx proxy/FastCGI)
-5. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
-6. Permuations of #2 such as: `X-Forwarded`, `Forwarded-For` and `Forwarded`
-7. `req.connection.remoteAddress`
-8. `req.socket.remoteAddress`
-9. `req.connection.socket.remoteAddress`
-10. `req.info.remoteAddress`
+2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.)
+3. `CF-Connecting-IP` (Cloudflare)
+4. `True-Client-Ip` (Akamai and Cloudflare)
+5. `X-Real-IP` (Nginx proxy/FastCGI)
+6. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
+7. `X-Forwarded`, `Forwarded-For` and `Forwarded` (Variations of #2)
+8. `req.connection.remoteAddress`
+9. `req.socket.remoteAddress`
+10. `req.connection.socket.remoteAddress`
+11. `req.info.remoteAddress`
 
-If cannot find an IP address, it will return `null`.
+If an IP address cannot be found, it will return `null`.
 
 ## Samples Use Cases
 
@@ -91,7 +93,9 @@ To easily generate a new changelog, install [github-changelog-generator](https:/
 ## Contributors
 
 Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
+Thanks to [@fluxsauce ](https://github.com/raunc ) for adding Squid proxy support.
+Thanks to [@fluxsauce ](https://github.com/fluxsauce) for adding `CF-Connecting-IP` and `True-Client-IP`.
 
 ## License
 
-The MIT License (MIT) - 2016
+The MIT License (MIT) - 2017
