@@ -9,16 +9,18 @@ A tiny Node.js module for retrieving a request's IP address.
 
 ## Installation
 
-    npm install request-ip --save
+```bash
+npm install request-ip --save
+```
     
 ## Getting Started
 
 ```javascript
-var requestIp = require('request-ip');
+const requestIp = require('request-ip');
 
 // inside middleware handler
-var ipMiddleware = function(req, res, next) {
-    var clientIp = requestIp.getClientIp(req); 
+const ipMiddleware = function(req, res, next) {
+    const clientIp = requestIp.getClientIp(req); 
     next();
 };
 
@@ -29,11 +31,11 @@ var ipMiddleware = function(req, res, next) {
 ### As Connect Middleware
 
 ```javascript
-var requestIp = require('request-ip');
+const requestIp = require('request-ip');
 app.use(requestIp.mw())
 
 app.use(function(req, res) {
-    var ip = req.clientIp;
+    const ip = req.clientIp;
     res.end(ip);
 });
 ```
@@ -92,9 +94,9 @@ To easily generate a new changelog, install [github-changelog-generator](https:/
 
 ## Contributors
 
-Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
-Thanks to [@fluxsauce ](https://github.com/raunc ) for adding Squid proxy support.
-Thanks to [@fluxsauce ](https://github.com/fluxsauce) for adding `CF-Connecting-IP` and `True-Client-IP`.
+* Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
+* Thanks to [@raunc](https://github.com/raunc) for adding Squid proxy support.
+* Thanks to [@fluxsauce](https://github.com/fluxsauce) for adding `CF-Connecting-IP` and `True-Client-IP`.
 
 ## License
 
