@@ -8,7 +8,7 @@
     "url": "https://github.com/pbojinov/request-ip.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/nyc --reporter=html --reporter=text --check-coverage --lines=84 --statements=84 tape ./test/*.js",
+    "test": "./node_modules/.bin/nyc --reporter=html --reporter=text --check-coverage --lines=82 --statements=82 tape ./test/*.js",
     "changelog": "github_changelog_generator -t 4c910e93a260e924d44e800b1a4345bf1115c532"
   },
   "keywords": [

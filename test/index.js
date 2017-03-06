@@ -45,11 +45,9 @@ test('req.headers is undefined', (t) => {
 
 test('getClientIpFromXForwardedFor', (t) => {
     t.plan(3);
-    t.throws(() => requestIp.getClientIpFromXForwardedFor('fail'), TypeError);
-    t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
     t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '107.77.213.113');
     t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '107.77.213.113');
-    t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unkown'), null);
+    t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), undefined);
 });
 
 test('x-client-ip', (t) => {
