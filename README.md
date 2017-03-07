@@ -72,9 +72,6 @@ If an IP address cannot be found, it will return `null`.
 
 * Getting a user's IP for geolocation.
 
-## Dependencies
-
-None
 
 ## Running the Tests
 
@@ -100,7 +97,7 @@ To easily generate a new changelog, install [github-changelog-generator](https:/
 
 * Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
 * Thanks to [@raunc](https://github.com/raunc) for adding Squid proxy support.
-* Thanks to [@fluxsauce](https://github.com/fluxsauce) for adding `CF-Connecting-IP` and `True-Client-IP`.
+* Thanks to [@fluxsauce](https://github.com/fluxsauce) for adding `CF-Connecting-IP`, `True-Client-IP`, and ES6 support.
 
 ## License
 
