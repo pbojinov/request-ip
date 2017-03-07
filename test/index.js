@@ -347,7 +347,7 @@ test('getClientIp - req.connection.socket.remoteAddress', (t) => {
     };
     t.equal(requestIp.getClientIp(mockReq), '206.190.36.45');
     mockReq.connection.socket.remoteAddress = 'fail';
-    t.equal(requestIp.getClientIp(mockReq), '');
+    t.equal(requestIp.getClientIp(mockReq), null);
 });
 
 test('req.socket.remoteAddress', (t) => {
@@ -373,7 +373,7 @@ test('getClientIp - req.info.remoteAddress', (t) => {
 test('getClientIp - default', (t) => {
     t.plan(1);
     const found = requestIp.getClientIp({});
-    t.equal(found, '');
+    t.equal(found, null);
 });
 
 test('request-ip.mw', (t) => {

@@ -35,6 +35,7 @@ function getClientIpFromXForwardedFor(value) {
  * @returns {string} ip - The IP address if known, defaulting to empty string if unknown.
  */
 function getClientIp(req) {
+
     // Server is probably behind a proxy.
     if (req.headers) {
         // Standard headers used by Amazon EC2, Heroku, and others.
@@ -103,7 +104,7 @@ function getClientIp(req) {
         return req.info.remoteAddress;
     }
 
-    return '';
+    return null;
 }
 
 /**
