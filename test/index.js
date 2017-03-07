@@ -1,8 +1,8 @@
 const http = require('http');
-const test = require('tape');
 const request = require('request');
 const requestIp = require('../index.js');
 const tapSpec = require('tap-spec');
+const test = require('tape');
 
 test.createStream().pipe(tapSpec()).pipe(process.stdout);
 
@@ -44,10 +44,11 @@ test('req.headers is undefined', (t) => {
 });
 
 test('getClientIpFromXForwardedFor', (t) => {
-    t.plan(3);
+    t.plan(4);
     t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '107.77.213.113');
     t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '107.77.213.113');
     t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), undefined);
+    t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
 });
 
 test('x-client-ip', (t) => {
@@ -324,6 +325,56 @@ test('req.connection.socket.remoteAddress', (t) => {
             }
         });
     });
+});
+
+test('getClientIp - req.connection.remoteAddress', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        connection: {
+            remoteAddress: '172.217.6.78',
+        },
+    });
+    t.equal(found, '172.217.6.78');
+});
+
+test('getClientIp - req.connection.socket.remoteAddress', (t) => {
+    t.plan(2);
+    const mockReq = {
+        connection: {
+            socket: {
+                remoteAddress: '206.190.36.45',
+            },
+        },
+    };
+    t.equal(requestIp.getClientIp(mockReq), '206.190.36.45');
+    mockReq.connection.socket.remoteAddress = 'fail';
+    t.equal(requestIp.getClientIp(mockReq), '');
+});
+
+test('req.socket.remoteAddress', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        socket: {
+            remoteAddress: '204.79.197.200',
+        },
+    });
+    t.equal(found, '204.79.197.200');
+});
+
+test('getClientIp - req.info.remoteAddress', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        info: {
+            remoteAddress: '50.18.192.250',
+        },
+    });
+    t.equal(found, '50.18.192.250');
+});
+
+test('getClientIp - default', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({});
+    t.equal(found, '');
 });
 
 test('request-ip.mw', (t) => {
