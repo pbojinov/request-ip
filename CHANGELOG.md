@@ -2,16 +2,34 @@
 
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.3...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.0...HEAD)
+
+**Implemented enhancements:**
+
+- ES2015 Support [\#22](https://github.com/pbojinov/request-ip/issues/22)
+
+## [2.0.0](https://github.com/pbojinov/request-ip/tree/2.0.0) (2017-03-07)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.3.0...2.0.0)
+
+**Closed issues:**
+
+- optimized your code a bit \(no need to evalutate every option before choosing first one that matches. just evaluate then return on first match\) [\#15](https://github.com/pbojinov/request-ip/issues/15)
+
+**Merged pull requests:**
+
+- Refactor to ES6 [\#23](https://github.com/pbojinov/request-ip/pull/23) ([fluxsauce](https://github.com/fluxsauce))
+
+## [1.3.0](https://github.com/pbojinov/request-ip/tree/1.3.0) (2017-03-03)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/1.2.3...1.3.0)
 
 **Closed issues:**
 
 - Support Cloudflare? [\#20](https://github.com/pbojinov/request-ip/issues/20)
 - How to receive IP in client [\#17](https://github.com/pbojinov/request-ip/issues/17)
-- optimized your code a bit \(no need to evalutate every option before choosing first one that matches. just evaluate then return on first match\) [\#15](https://github.com/pbojinov/request-ip/issues/15)
 
 **Merged pull requests:**
 
+- Adding support for CF-Connecting-IP and True-Client-IP [\#21](https://github.com/pbojinov/request-ip/pull/21) ([fluxsauce](https://github.com/fluxsauce))
 - Return once we find something and don't crash if req.headers is undefined [\#19](https://github.com/pbojinov/request-ip/pull/19) ([rokob](https://github.com/rokob))
 - Ignore 'unknown' ip addresses in X-Forwarded-For header [\#18](https://github.com/pbojinov/request-ip/pull/18) ([raunc](https://github.com/raunc))
 
