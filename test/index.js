@@ -127,6 +127,31 @@ test('x-forwarded-for with unknown first ip', (t) => {
     });
 });
 
+test('x-forwarded-for with ipv4:port', (t) => {
+    t.plan(1);
+    const options = {
+        url: '',
+        headers: {
+            'x-forwarded-for': '93.186.30.120:12345',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const firstIp = options.headers['x-forwarded-for'].split(',')[0].trim().split(':')[0];
+                t.equal(firstIp, found);
+                server.close();
+            }
+        });
+    });
+});
+
 test('cf-connecting-ip', (t) => {
     t.plan(1);
     const options = {
