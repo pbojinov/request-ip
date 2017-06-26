@@ -52,8 +52,5 @@
   },
   "dependencies": {
     "is_js": "^0.9.0"
-  },
-  "engines": {
-    "node": "<6"
   }
 }
