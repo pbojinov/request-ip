@@ -20,7 +20,18 @@ function getClientIpFromXForwardedFor(value) {
     // Therefore, the right-most IP address is the IP address of the most recent proxy
     // and the left-most IP address is the IP address of the originating client.
     // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
-    const forwardedIps = value.split(',').map(e => e.trim());
+    // Azure Web App's also adds a port for some reason, so we'll only use the first part (the IP)
+    const forwardedIps = value.split(',').map((e) => {
+        const ip = e.trim();
+        if (ip.includes(':')) {
+            const splitted = ip.split(':');
+            // make sure we only use this if it's ipv4 (ip:port)
+            if (splitted.length === 2) {
+                return splitted[0];
+            }
+        }
+        return ip;
+    });
 
     // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
     // Therefore taking the left-most IP address that is not unknown
@@ -35,7 +46,6 @@ function getClientIpFromXForwardedFor(value) {
  * @returns {string} ip - The IP address if known, defaulting to empty string if unknown.
  */
 function getClientIp(req) {
-
     // Server is probably behind a proxy.
     if (req.headers) {
         // Standard headers used by Amazon EC2, Heroku, and others.
