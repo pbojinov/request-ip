@@ -12,7 +12,7 @@ function getClientIpFromXForwardedFor(value) {
     }
 
     if (is.not.string(value)) {
-        throw new TypeError(`Expected a string, got "${typeof value}"`);
+        throw new TypeError('Expected a string, got "' + typeof value + '"');
     }
 
     // x-forwarded-for may return multiple IP addresses in the format:
