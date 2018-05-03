@@ -53,7 +53,7 @@ It looks for specific headers in the request and falls back to some defaults if 
 The following is the order we use to determine the user ip from the request.
 
 1. `X-Client-IP`  
-2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.)
+2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "proxy 1 IP, proxy 2 IP, client IP, ", so we take the the last one.)
 3. `CF-Connecting-IP` (Cloudflare)
 4. `True-Client-Ip` (Akamai and Cloudflare)
 5. `X-Real-IP` (Nginx proxy/FastCGI)
