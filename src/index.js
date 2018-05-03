@@ -16,7 +16,7 @@ function getClientIpFromXForwardedFor(value) {
     }
 
     // x-forwarded-for may return multiple IP addresses in the format:
-    // "client IP, proxy 1 IP, proxy 2 IP"
+    // "proxy 1 IP, proxy 2 IP, client IP"
     // Therefore, the right-most IP address is the IP address of the most recent proxy
     // and the left-most IP address is the IP address of the originating client.
     // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
@@ -34,9 +34,16 @@ function getClientIpFromXForwardedFor(value) {
     });
 
     // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
-    // Therefore taking the left-most IP address that is not unknown
+    // Therefore taking the right-most IP address that is not unknown
     // A Squid configuration directive can also set the value to "unknown" (http://www.squid-cache.org/Doc/config/forwarded_for/)
-    return forwardedIps.find(is.ip);
+    for (let i = forwardedIps.length - 1; i >= 0; i -= 1) {
+        if (is.ip(forwardedIps[i])) {
+            return forwardedIps[i];
+        }
+    }
+
+    // If no value in the split list is an ip, return null
+    return null;
 }
 
 /**
