@@ -135,7 +135,10 @@ function mw(options) {
 
     const attributeName = configuration.attributeName || 'clientIp';
     return (req, res, next) => {
-        req[attributeName] = getClientIp(req); // eslint-disable-line no-param-reassign
+        const ip = getClientIp(req);
+        Object.defineProperty(req, attributeName, {
+            get: () => ip,
+        });
         next();
     };
 }
