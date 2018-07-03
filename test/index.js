@@ -442,6 +442,22 @@ test('request-ip.mw - user code customizes augmented attribute name', (t) => {
     });
 });
 
+test('request-ip.mw - attribute has getter by Object.defineProperty', (t) => {
+    t.plan(2);
+    const mw = requestIp.mw();
+    t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
+
+    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
+    Object.defineProperty(mockReq, 'clientIp', {
+        enumerable: true,
+        configurable: true,
+        get: () => '1.2.3.4',
+    });
+    mw(mockReq, null, () => {
+        t.equal(mockReq.clientIp, '111.222.111.222', "when used - the middleware augments the request object with attribute 'clientIp'");
+    });
+});
+
 test('android request to AWS EBS app (x-forwarded-for)', (t) => {
     t.plan(1);
     // 172.x.x.x and 192.x.x.x. are considered "private IP subnets"
