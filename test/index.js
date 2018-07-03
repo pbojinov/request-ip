@@ -1,6 +1,6 @@
 const http = require('http');
 const request = require('request');
-const requestIp = require('../index.js');
+const requestIp = require('../src/index.js');
 const tapSpec = require('tap-spec');
 const test = require('tape');
 

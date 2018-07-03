@@ -2,15 +2,16 @@
   "name": "request-ip",
   "version": "2.0.2",
   "description": "A small node.js module to retrieve the request's IP address",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/pbojinov/request-ip.git"
   },
   "scripts": {
-    "test": "./node_modules/.bin/nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/*.js",
+    "test": "./node_modules/.bin/nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 ./node_modules/tape/bin/tape ./test/index.js",
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | coveralls",
-    "changelog": "github_changelog_generator -t 4c910e93a260e924d44e800b1a4345bf1115c532"
+    "changelog": "github_changelog_generator -t 4c910e93a260e924d44e800b1a4345bf1115c532",
+    "build": "./node_modules/.bin/babel ./src/index.js > ./dist/index.js"
   },
   "keywords": [
     "request ip",
@@ -41,14 +42,17 @@
   },
   "homepage": "https://github.com/pbojinov/request-ip",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.51",
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
     "coveralls": "^2.11.2",
     "eslint": "^3.17.0",
     "eslint-config-airbnb-base": "^11.1.1",
     "eslint-plugin-import": "^2.2.0",
-    "nyc": "^10.1.2",
+    "nyc": "^12.0.2",
     "request": "^2.54.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.3"
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.1"
   },
   "dependencies": {
     "is_js": "^0.9.0"
