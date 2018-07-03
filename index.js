@@ -114,6 +114,11 @@ function getClientIp(req) {
         return req.info.remoteAddress;
     }
 
+    // AWS Api Gateway + Lambda
+    if (is.existy(req.requestContext) && is.existy(req.requestContext.identity) && is.ip(req.requestContext.identity.sourceIp)) {
+        return req.requestContext.identity.sourceIp;
+    }
+
     return null;
 }
 
