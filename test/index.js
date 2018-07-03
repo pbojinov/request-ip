@@ -395,6 +395,18 @@ test('getClientIp - req.info.remoteAddress', (t) => {
     t.equal(found, '50.18.192.250');
 });
 
+test('getClientIp - req.requestContext.identity.sourceIp', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        requestContext: {
+            identity: {
+                sourceIp: '50.18.192.250',
+            },
+        },
+    });
+    t.equal(found, '50.18.192.250');
+});
+
 test('getClientIp - default', (t) => {
     t.plan(1);
     const found = requestIp.getClientIp({});
