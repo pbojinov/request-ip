@@ -2,7 +2,31 @@
 
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.0...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.2...HEAD)
+
+**Closed issues:**
+
+- Not getting the right ip first time [\#28](https://github.com/pbojinov/request-ip/issues/28)
+- Allow using node \> 6 [\#27](https://github.com/pbojinov/request-ip/issues/27)
+
+**Merged pull requests:**
+
+- Get client ip when using AWS Api Gateway + Lambda. [\#35](https://github.com/pbojinov/request-ip/pull/35) ([rafaelthemendes](https://github.com/rafaelthemendes))
+- redefine attribute getter [\#34](https://github.com/pbojinov/request-ip/pull/34) ([isayme](https://github.com/isayme))
+
+## [2.0.2](https://github.com/pbojinov/request-ip/tree/2.0.2) (2017-06-26)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.1...2.0.2)
+
+**Closed issues:**
+
+- azure web app adds port to x-forwarded-for [\#29](https://github.com/pbojinov/request-ip/issues/29)
+
+**Merged pull requests:**
+
+- handling x-forwarded-for with ip:port [\#30](https://github.com/pbojinov/request-ip/pull/30) ([luisrudge](https://github.com/luisrudge))
+
+## [2.0.1](https://github.com/pbojinov/request-ip/tree/2.0.1) (2017-03-09)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.0...2.0.1)
 
 **Implemented enhancements:**
 
