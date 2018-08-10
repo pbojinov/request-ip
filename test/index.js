@@ -77,6 +77,33 @@ test('x-client-ip', (t) => {
     });
 });
 
+test('fastly-client-ip', (t) => {
+    t.plan(1);
+    const options = {
+        url: '',
+        headers: {
+            'fastly-client-ip': '59.195.114.48',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    // node listens on a random port when using 0
+    // http://stackoverflow.com/questions/9901043/how-does-node-js-choose-random-ports
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        // we can't make the request URL until we get the port number from the new server
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                t.equal(options.headers['fastly-client-ip'], found);
+                server.close();
+            }
+        });
+    });
+});
+
 test('x-forwarded-for', (t) => {
     t.plan(1);
     const options = {

@@ -53,6 +53,11 @@ function getClientIp(req) {
             return req.headers['x-client-ip'];
         }
 
+        // Firebase hosting header (When forwared to cloud function)
+        if (is.ip(req.headers['fastly-client-ip'])) {
+            return req.headers['fastly-client-ip'];
+        }
+
         // Load-balancers (AWS ELB) or proxies.
         const xForwardedFor = getClientIpFromXForwardedFor(req.headers['x-forwarded-for']);
         if (is.ip(xForwardedFor)) {
