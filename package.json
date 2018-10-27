@@ -2,33 +2,31 @@
   "name": "request-ip",
   "version": "2.1.1",
   "description": "A small node.js module to retrieve the request's IP address",
-  "main": "./dist/index.js",
+  "keywords": [
+    "X-Client-IP",
+    "X-Forwarded-For",
+    "X-Real-IP",
+    "address",
+    "client",
+    "connection.remoteAddress",
+    "header",
+    "ip",
+    "ipv4",
+    "ipv6",
+    "middleware",
+    "proxy",
+    "request",
+    "request ip"
+  ],
+  "homepage": "https://github.com/pbojinov/request-ip",
+  "bugs": {
+    "url": "https://github.com/pbojinov/request-ip/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/pbojinov/request-ip.git"
   },
-  "scripts": {
-    "test": "./node_modules/.bin/nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 ./node_modules/tape/bin/tape ./test/index.js",
-    "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | coveralls",
-    "changelog": "github_changelog_generator -u pbojinov -p request-ip",
-    "build": "./node_modules/.bin/babel ./src/index.js > ./dist/index.js"
-  },
-  "keywords": [
-    "request ip",
-    "ip",
-    "address",
-    "request",
-    "proxy",
-    "client",
-    "header",
-    "X-Real-IP",
-    "X-Client-IP",
-    "X-Forwarded-For",
-    "connection.remoteAddress",
-    "middleware",
-    "ipv4",
-    "ipv6"
-  ],
+  "license": "MIT",
   "author": "Petar Bojinov <petarbojinov@gmail.com>",
   "contributors": [
     {
@@ -36,25 +34,30 @@
       "email": "jpeck@fluxsauce.com"
     }
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pbojinov/request-ip/issues"
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "babel ./src/index.js > ./dist/index.js",
+    "changelog": "github_changelog_generator -u pbojinov -p request-ip",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/index.js"
   },
-  "homepage": "https://github.com/pbojinov/request-ip",
+  "dependencies": {
+    "is_js": "^0.9.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.51",
     "@babel/core": "^7.0.0-beta.51",
     "@babel/preset-env": "^7.0.0-beta.51",
-    "coveralls": "^2.11.2",
-    "eslint": "^3.17.0",
-    "eslint-config-airbnb-base": "^11.1.1",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "nyc": "^12.0.2",
+    "nyc": "^13.1.0",
     "request": "^2.54.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.1"
-  },
-  "dependencies": {
-    "is_js": "^0.9.0"
   }
 }
