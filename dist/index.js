@@ -72,6 +72,11 @@ function getClientIp(req) {
 
     if (is.ip(req.headers['cf-connecting-ip'])) {
       return req.headers['cf-connecting-ip'];
+    } // Fastly and Firebase hosting header (When forwared to cloud function)
+
+
+    if (is.ip(req.headers['fastly-client-ip'])) {
+      return req.headers['fastly-client-ip'];
     } // Akamai and Cloudflare: True-Client-IP.
 
 
