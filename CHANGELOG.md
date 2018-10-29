@@ -1,8 +1,23 @@
 # Change Log
 
-## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
+## [2.1.2](https://github.com/pbojinov/request-ip/tree/2.1.2) (2018-10-29)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.1.1...2.1.2)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.2...HEAD)
+**Closed issues:**
+
+- Handle Firebase hosting header fastly-client-ip [\#37](https://github.com/pbojinov/request-ip/issues/37)
+
+**Merged pull requests:**
+
+- chore: improve packaging [\#40](https://github.com/pbojinov/request-ip/pull/40) ([pi0](https://github.com/pi0))
+- fixed Cannot redefine property: clientIp error [\#39](https://github.com/pbojinov/request-ip/pull/39) ([karankohli13](https://github.com/karankohli13))
+- Add firebase hosting header [\#38](https://github.com/pbojinov/request-ip/pull/38) ([vishalvijay](https://github.com/vishalvijay))
+
+## [2.1.1](https://github.com/pbojinov/request-ip/tree/2.1.1) (2018-07-03)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.1.0...2.1.1)
+
+## [2.1.0](https://github.com/pbojinov/request-ip/tree/2.1.0) (2018-07-03)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.0.2...2.1.0)
 
 **Closed issues:**
 
