@@ -50,19 +50,20 @@ The connect-middleware also supports retrieving the ip address under a custom at
 
 It looks for specific headers in the request and falls back to some defaults if they do not exist.
 
-The following is the order we use to determine the user ip from the request.
+The user ip is determined by the following order:
 
 1. `X-Client-IP`  
 2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.)
 3. `CF-Connecting-IP` (Cloudflare)
-4. `True-Client-Ip` (Akamai and Cloudflare)
-5. `X-Real-IP` (Nginx proxy/FastCGI)
-6. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
-7. `X-Forwarded`, `Forwarded-For` and `Forwarded` (Variations of #2)
-8. `req.connection.remoteAddress`
-9. `req.socket.remoteAddress`
-10. `req.connection.socket.remoteAddress`
-11. `req.info.remoteAddress`
+4. `Fastly-Client-Ip` (Fastly CDN and Firebase hosting header when forwared to a cloud function)
+5. `True-Client-Ip` (Akamai and Cloudflare)
+6. `X-Real-IP` (Nginx proxy/FastCGI)
+7. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
+8. `X-Forwarded`, `Forwarded-For` and `Forwarded` (Variations of #2)
+9. `req.connection.remoteAddress`
+10. `req.socket.remoteAddress`
+11. `req.connection.socket.remoteAddress`
+12. `req.info.remoteAddress`
 
 If an IP address cannot be found, it will return `null`.
 
@@ -96,7 +97,8 @@ To easily generate a new changelog, install [github-changelog-generator](https:/
 * Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
 * Thanks to [@raunc](https://github.com/raunc) for adding Squid proxy support.
 * Thanks to [@fluxsauce](https://github.com/fluxsauce) for adding `CF-Connecting-IP`, `True-Client-IP`, and ES6 support.
+* Thanks to [@vishalvijay](https://github.com/vishalvijay) for adding Fastly/Firebase hosting support.
 
 ## License
 
-The MIT License (MIT) - 2017
+The MIT License (MIT) - 2018

@@ -13,7 +13,8 @@
     "X-Client-IP",
     "X-Forwarded-For",
     "CF-Connecting-IP",
-    "True-Client-IP"
+    "Fastly-Client-IP",
+    "True-Client-IP",
     "X-Real-IP",
     "X-Cluster-Client-IP",
     "X-Forwarded",
