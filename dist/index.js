@@ -153,7 +153,8 @@ function mw(options) {
     Object.defineProperty(req, attributeName, {
       get: function get() {
         return ip;
-      }
+      },
+      configurable: true
     });
     next();
   };

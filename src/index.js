@@ -143,6 +143,7 @@ function mw(options) {
         const ip = getClientIp(req);
         Object.defineProperty(req, attributeName, {
             get: () => ip,
+            configurable: true
         });
         next();
     };
