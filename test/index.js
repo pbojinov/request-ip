@@ -519,3 +519,28 @@ test('android request to AWS EBS app (x-forwarded-for)', (t) => {
         });
     });
 });
+
+test('request to Google Cloud App Engine (x-appengine-user-ip)', (t) => {
+    t.plan(1);
+    const wanted = '107.77.213.113';
+    const options = {
+        url: '',
+        headers: {
+            host: '[redacted]',
+            'x-appengine-user-ip': '107.77.213.113',
+        },
+    };
+
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // ip address should be equal to the first "x-appengine-user-ip" value
+                t.equal(found, wanted);
+                server.close();
+            }
+        });
+    });
+});
