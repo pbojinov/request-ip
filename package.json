@@ -53,6 +53,7 @@
     "test": "nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/index.js"
   },
   "dependencies": {
+    "extend": "^3.0.2",
     "is_js": "^0.9.0"
   },
   "devDependencies": {
