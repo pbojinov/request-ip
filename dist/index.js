@@ -1,8 +1,26 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var is = require('is_js');
+
+var extend = require('extend');
+
+var DEFAULTS = {
+  sources: [// Standard headers used by Amazon EC2, Heroku, and others.
+  'headers.x-client-ip', // Load-balancers (AWS ELB) or proxies.
+  'headers.x-forwarded-for', // Cloudflare.
+  // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
+  // CF-Connecting-IP - applied to every request to the origin.
+  'headers.cf-connecting-ip', // Fastly and Firebase hosting header (When forwared to cloud function)
+  'headers.fastly-client-ip', // Akamai and Cloudflare: True-Client-IP.
+  'headers.true-client-ip', // Default nginx proxy/fcgi; alternative to x-forwarded-for, used by some proxies.
+  'headers.x-real-ip', // (Rackspace LB and Riverbed's Stingray)
+  // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
+  // https://splash.riverbed.com/docs/DOC-1926
+  'headers.x-cluster-client-ip', 'headers.x-forwarded', 'headers.forwarded-for', 'headers.forwarded', 'connection.remoteAddress', 'connection.socket.remoteAddress', 'socket.remoteAddress', 'info.remoteAddress', // AWS Api Gateway + Lambda
+  'requestContext.identity.sourceIp']
+};
 /**
  * Parse x-forwarded-for headers.
  *
@@ -10,12 +28,7 @@ var is = require('is_js');
  * @return {string|null} First known IP address, if any.
  */
 
-
 function getClientIpFromXForwardedFor(value) {
-  if (!is.existy(value)) {
-    return null;
-  }
-
   if (is.not.string(value)) {
     throw new TypeError("Expected a string, got \"".concat(_typeof(value), "\""));
   } // x-forwarded-for may return multiple IP addresses in the format:
@@ -45,92 +58,60 @@ function getClientIpFromXForwardedFor(value) {
   return forwardedIps.find(is.ip);
 }
 /**
+ * Parse object tree and fetch relevant key.
+ *
+ * @param req
+ * @param keys
+ * @returns {string|null|*} - The value from the object tree.
+ */
+
+
+function getIpFromSource(req, keys) {
+  var key = keys.shift();
+
+  if (!is.existy(req[key])) {
+    return null;
+  }
+
+  if (keys.length !== 0) {
+    return getIpFromSource(req[key], keys);
+  }
+
+  if (key === 'x-forwarded-for') {
+    return getClientIpFromXForwardedFor(req[key]);
+  }
+
+  return req[key];
+}
+/**
  * Determine client IP address.
  *
  * @param req
+ * @param _options
  * @returns {string} ip - The IP address if known, defaulting to empty string if unknown.
  */
 
 
 function getClientIp(req) {
-  // Server is probably behind a proxy.
-  if (req.headers) {
-    // Standard headers used by Amazon EC2, Heroku, and others.
-    if (is.ip(req.headers['x-client-ip'])) {
-      return req.headers['x-client-ip'];
-    } // Load-balancers (AWS ELB) or proxies.
+  var _options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
+  var options = extend(false, {}, DEFAULTS, _options);
+  var sources = options.sources; // eslint-disable-next-line no-restricted-syntax
 
-    var xForwardedFor = getClientIpFromXForwardedFor(req.headers['x-forwarded-for']);
-
-    if (is.ip(xForwardedFor)) {
-      return xForwardedFor;
-    } // Cloudflare.
-    // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
-    // CF-Connecting-IP - applied to every request to the origin.
-
-
-    if (is.ip(req.headers['cf-connecting-ip'])) {
-      return req.headers['cf-connecting-ip'];
-    } // Fastly and Firebase hosting header (When forwared to cloud function)
-
-
-    if (is.ip(req.headers['fastly-client-ip'])) {
-      return req.headers['fastly-client-ip'];
-    } // Akamai and Cloudflare: True-Client-IP.
-
-
-    if (is.ip(req.headers['true-client-ip'])) {
-      return req.headers['true-client-ip'];
-    } // Default nginx proxy/fcgi; alternative to x-forwarded-for, used by some proxies.
-
-
-    if (is.ip(req.headers['x-real-ip'])) {
-      return req.headers['x-real-ip'];
-    } // (Rackspace LB and Riverbed's Stingray)
-    // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
-    // https://splash.riverbed.com/docs/DOC-1926
-
-
-    if (is.ip(req.headers['x-cluster-client-ip'])) {
-      return req.headers['x-cluster-client-ip'];
+  for (var key in sources) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (Object.prototype.hasOwnProperty(sources, key)) {
+      // eslint-disable-next-line no-continue
+      continue;
     }
 
-    if (is.ip(req.headers['x-forwarded'])) {
-      return req.headers['x-forwarded'];
+    var source = sources[key];
+    var keys = source.split('.');
+    var ip = getIpFromSource(req, keys);
+
+    if (is.ip(ip)) {
+      return ip;
     }
-
-    if (is.ip(req.headers['forwarded-for'])) {
-      return req.headers['forwarded-for'];
-    }
-
-    if (is.ip(req.headers.forwarded)) {
-      return req.headers.forwarded;
-    }
-  } // Remote address checks.
-
-
-  if (is.existy(req.connection)) {
-    if (is.ip(req.connection.remoteAddress)) {
-      return req.connection.remoteAddress;
-    }
-
-    if (is.existy(req.connection.socket) && is.ip(req.connection.socket.remoteAddress)) {
-      return req.connection.socket.remoteAddress;
-    }
-  }
-
-  if (is.existy(req.socket) && is.ip(req.socket.remoteAddress)) {
-    return req.socket.remoteAddress;
-  }
-
-  if (is.existy(req.info) && is.ip(req.info.remoteAddress)) {
-    return req.info.remoteAddress;
-  } // AWS Api Gateway + Lambda
-
-
-  if (is.existy(req.requestContext) && is.existy(req.requestContext.identity) && is.ip(req.requestContext.identity.sourceIp)) {
-    return req.requestContext.identity.sourceIp;
   }
 
   return null;

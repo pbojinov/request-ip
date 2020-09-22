@@ -519,3 +519,60 @@ test('android request to AWS EBS app (x-forwarded-for)', (t) => {
         });
     });
 });
+
+test('Limited header checks', (t) => {
+    t.plan(1);
+    const wanted = '1.1.1.2';
+    const requestMock = {
+        headers: {
+            host: '[redacted]',
+            'x-real-ip': '172.31.41.116',
+            'x-forwarded-for': '107.77.213.113, 172.31.41.116',
+            'accept-encoding': 'gzip',
+            'user-agent': 'okhttp/3.4.1',
+            'x-forwarded-port': '443',
+            'x-forwarded-proto': 'https',
+        },
+        requestContext: {
+            identity: {
+                sourceIp: '1.1.1.2',
+            },
+        },
+    };
+
+    const found = requestIp.getClientIp(requestMock, {
+        sources: [
+            'requestContext.identity.sourceIp',
+        ],
+    });
+
+    t.equal(found, wanted);
+});
+
+test('Rearranged header order', (t) => {
+    t.plan(2);
+    const wanted = '2.3.3.4';
+    const wanted2 = '32.144.5.106';
+    const requestMock = {
+        headers: {
+            'true-client-ip': '2.3.3.4',
+            'x-client-ip': '32.144.5.106',
+        },
+    };
+
+    let found = requestIp.getClientIp(requestMock, {
+        sources: [
+            'headers.true-client-ip',
+            'headers.x-client-ip',
+        ],
+    });
+    t.equal(found, wanted);
+
+    found = requestIp.getClientIp(requestMock, {
+        sources: [
+            'headers.x-client-ip',
+            'headers.true-client-ip',
+        ],
+    });
+    t.equal(found, wanted2);
+});
