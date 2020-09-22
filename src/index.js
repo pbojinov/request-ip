@@ -68,6 +68,13 @@ function getClientIpFromXForwardedFor(value) {
     return forwardedIps.find(is.ip);
 }
 
+/**
+ * Parse object tree and fetch relevant key.
+ *
+ * @param req
+ * @param keys
+ * @returns {string|null|*} - The value from the object tree.
+ */
 function getIpFromSource(req, keys) {
     const key = keys.shift();
     if (!is.existy(req[key])) {
