@@ -53,7 +53,7 @@ It looks for specific headers in the request and falls back to some defaults if 
 The user ip is determined by the following order:
 
 1. `X-Client-IP`  
-2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the the first one.)
+2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the first one.)
 3. `CF-Connecting-IP` (Cloudflare)
 4. `Fastly-Client-Ip` (Fastly CDN and Firebase hosting header when forwared to a cloud function)
 5. `True-Client-Ip` (Akamai and Cloudflare)
