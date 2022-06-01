@@ -544,3 +544,23 @@ test('request to Google Cloud App Engine (x-appengine-user-ip)', (t) => {
         });
     });
 });
+
+test('Fastify (request.raw) found', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        raw: {
+            headers: {
+                forwarded: '91.203.163.199',
+            },
+        },
+    });
+    t.equal(found, '91.203.163.199');
+});
+
+test('Fastify (request.raw) not found', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        raw: {},
+    });
+    t.equal(found, null);
+});
