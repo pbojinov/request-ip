@@ -45,7 +45,10 @@ test('req.headers is undefined', (t) => {
 
 test('getClientIpFromXForwardedFor', (t) => {
     t.plan(3);
-    t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '172.31.41.116');
+    t.equal(
+        requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'),
+        '172.31.41.116',
+    );
     t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), null);
     t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
 });
@@ -121,7 +124,9 @@ test('x-forwarded-for', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                const lastIp = options.headers['x-forwarded-for'].split(',')[2].trim();
+                const lastIp = options.headers['x-forwarded-for']
+                    .split(',')[2]
+                    .trim();
                 t.equal(lastIp, found);
                 server.close();
             }
@@ -146,7 +151,9 @@ test('x-forwarded-for with unknown first ip', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                const secondIp = options.headers['x-forwarded-for'].split(',')[1].trim();
+                const secondIp = options.headers['x-forwarded-for']
+                    .split(',')[1]
+                    .trim();
                 t.equal(secondIp, found);
                 server.close();
             }
@@ -171,7 +178,10 @@ test('x-forwarded-for with ipv4:port', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                const firstIp = options.headers['x-forwarded-for'].split(',')[0].trim().split(':')[0];
+                const firstIp = options.headers['x-forwarded-for']
+                    .split(',')[0]
+                    .trim()
+                    .split(':')[0];
                 t.equal(firstIp, found);
                 server.close();
             }
@@ -442,8 +452,16 @@ test('getClientIp - default', (t) => {
 
 test('request-ip.mw', (t) => {
     t.plan(3);
-    t.equal(typeof requestIp.mw, 'function', 'requestIp.mw - should be a factory function');
-    t.equal(requestIp.mw.length, 1, 'requestIp.mw expects 1 argument - options');
+    t.equal(
+        typeof requestIp.mw,
+        'function',
+        'requestIp.mw - should be a factory function',
+    );
+    t.equal(
+        requestIp.mw.length,
+        1,
+        'requestIp.mw expects 1 argument - options',
+    );
     t.throws(() => requestIp.mw('fail'), TypeError);
 });
 
@@ -452,20 +470,28 @@ test('request-ip.mw - used with no arguments', (t) => {
     const mw = requestIp.mw();
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
+    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
     mw(mockReq, null, () => {
-        t.equal(mockReq.clientIp, '111.222.111.222', "when used - the middleware augments the request object with attribute 'clientIp'");
+        t.equal(
+            mockReq.clientIp,
+            '111.222.111.222',
+            "when used - the middleware augments the request object with attribute 'clientIp'",
+        );
     });
 });
 
 test('request-ip.mw - user code customizes augmented attribute name', (t) => {
     t.plan(2);
-    const mw = requestIp.mw({ attributeName: 'realIp' });
+    const mw = requestIp.mw({attributeName: 'realIp'});
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
+    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
     mw(mockReq, null, () => {
-        t.equal(mockReq.realIp, '111.222.111.222', 'when used - the middleware augments the request object with user-specified attribute name ');
+        t.equal(
+            mockReq.realIp,
+            '111.222.111.222',
+            'when used - the middleware augments the request object with user-specified attribute name ',
+        );
     });
 });
 
@@ -474,14 +500,18 @@ test('request-ip.mw - attribute has getter by Object.defineProperty', (t) => {
     const mw = requestIp.mw();
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
+    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
     Object.defineProperty(mockReq, 'clientIp', {
         enumerable: true,
         configurable: true,
         get: () => '1.2.3.4',
     });
     mw(mockReq, null, () => {
-        t.equal(mockReq.clientIp, '111.222.111.222', "when used - the middleware augments the request object with attribute 'clientIp'");
+        t.equal(
+            mockReq.clientIp,
+            '111.222.111.222',
+            "when used - the middleware augments the request object with attribute 'clientIp'",
+        );
     });
 });
 
@@ -563,4 +593,25 @@ test('Fastify (request.raw) not found', (t) => {
         raw: {},
     });
     t.equal(found, null);
+});
+
+test('Cf-Pseudo-IPv4 – Cloudflare fallback', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        headers: {
+            'Cf-Pseudo-IPv4': '29.74.48.74',
+        },
+    });
+    t.equal(found, '29.74.48.74');
+});
+
+test('Cf-Pseudo-IPv4 is not used when other valid headers exist', (t) => {
+    t.plan(1);
+    const found = requestIp.getClientIp({
+        headers: {
+            'Cf-Pseudo-IPv4': '29.74.48.74',
+            'x-forwarded-for': '129.78.138.66',
+        },
+    });
+    t.equal(found, '129.78.138.66');
 });

@@ -53,17 +53,17 @@ function getClientIpFromXForwardedFor(value) {
  * @returns {string} ip - The IP address if known, defaulting to empty string if unknown.
  */
 function getClientIp(req) {
-
     // Server is probably behind a proxy.
     if (req.headers) {
-
         // Standard headers used by Amazon EC2, Heroku, and others.
         if (is.ip(req.headers['x-client-ip'])) {
             return req.headers['x-client-ip'];
         }
 
         // Load-balancers (AWS ELB) or proxies.
-        const xForwardedFor = getClientIpFromXForwardedFor(req.headers['x-forwarded-for']);
+        const xForwardedFor = getClientIpFromXForwardedFor(
+            req.headers['x-forwarded-for'],
+        );
         if (is.ip(xForwardedFor)) {
             return xForwardedFor;
         }
@@ -115,7 +115,6 @@ function getClientIp(req) {
         if (is.ip(req.headers['x-appengine-user-ip'])) {
             return req.headers['x-appengine-user-ip'];
         }
-
     }
 
     // Remote address checks.
@@ -124,7 +123,10 @@ function getClientIp(req) {
         if (is.ip(req.connection.remoteAddress)) {
             return req.connection.remoteAddress;
         }
-        if (is.existy(req.connection.socket) && is.ip(req.connection.socket.remoteAddress)) {
+        if (
+            is.existy(req.connection.socket) &&
+            is.ip(req.connection.socket.remoteAddress)
+        ) {
             return req.connection.socket.remoteAddress;
         }
     }
@@ -138,8 +140,20 @@ function getClientIp(req) {
     }
 
     // AWS Api Gateway + Lambda
-    if (is.existy(req.requestContext) && is.existy(req.requestContext.identity) && is.ip(req.requestContext.identity.sourceIp)) {
+    if (
+        is.existy(req.requestContext) &&
+        is.existy(req.requestContext.identity) &&
+        is.ip(req.requestContext.identity.sourceIp)
+    ) {
         return req.requestContext.identity.sourceIp;
+    }
+
+    // Cloudflare fallback
+    // https://blog.cloudflare.com/eliminating-the-last-reasons-to-not-enable-ipv6/#introducingpseudoipv4
+    if (req.headers) {
+        if (is.ip(req.headers['Cf-Pseudo-IPv4'])) {
+            return req.headers['Cf-Pseudo-IPv4'];
+        }
     }
 
     // Fastify https://www.fastify.io/docs/latest/Reference/Request/
@@ -171,7 +185,7 @@ function mw(options) {
         const ip = getClientIp(req);
         Object.defineProperty(req, attributeName, {
             get: () => ip,
-            configurable: true
+            configurable: true,
         });
         next();
     };

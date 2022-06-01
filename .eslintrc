@@ -1,0 +1,7 @@
+{
+    "extends": [
+        "plugin:@shopify/node",
+        "plugin:@shopify/esnext",
+        "plugin:@shopify/prettier"
+    ]
+}
