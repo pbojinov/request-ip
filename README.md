@@ -107,7 +107,7 @@ npm build
 
 See the wonderful [changelog](https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md)
 
-To easily generate a new changelog, install [github-changelog-generator](https://github.com/skywinder/github-changelog-generator) then run `npm run changelog`.
+To generate a new changelog, install [github-changelog-generator](https://github.com/skywinder/github-changelog-generator) then run `npm run changelog`. This will require being on Ruby >= 3
 
 ## Contributors
 
