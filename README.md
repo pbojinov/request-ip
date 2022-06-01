@@ -2,7 +2,7 @@
 
 A tiny Node.js module for retrieving a request's IP address. 
 
-![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=2)
+![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=3)
 
 ![](https://travis-ci.org/pbojinov/request-ip.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/pbojinov/request-ip/badge.svg)](https://coveralls.io/r/pbojinov/request-ip)
@@ -11,6 +11,12 @@ A tiny Node.js module for retrieving a request's IP address.
 
 ## Installation
 
+Yarn
+```
+yarn add request-ip
+```
+
+npm
 ```bash
 npm install request-ip --save
 ```
