@@ -60,11 +60,12 @@ The user ip is determined by the following order:
 6. `X-Real-IP` (Nginx proxy/FastCGI)
 7. `X-Cluster-Client-IP` (Rackspace LB, Riverbed Stingray)
 8. `X-Forwarded`, `Forwarded-For` and `Forwarded` (Variations of #2)
-9. `req.connection.remoteAddress`
-10. `req.socket.remoteAddress`
-11. `req.connection.socket.remoteAddress`
-12. `req.info.remoteAddress`
-13. `request.raw` (Fastify)
+9. `appengine-user-ip` (Google App Engine)
+10. `req.connection.remoteAddress`
+11. `req.socket.remoteAddress`
+12. `req.connection.socket.remoteAddress`
+13. `req.info.remoteAddress`
+14. `request.raw` (Fastify)
 
 If an IP address cannot be found, it will return `null`.
 
@@ -87,6 +88,14 @@ Run the integration tests
 npm test
 ```
 
+## Building
+
+Compiles the current ES6 code to ES5 using Babel.
+
+```
+npm build
+```
+
 ## Release Notes
 
 See the wonderful [changelog](https://github.com/pbojinov/request-ip/blob/master/CHANGELOG.md)
@@ -102,4 +111,4 @@ To easily generate a new changelog, install [github-changelog-generator](https:/
 
 ## License
 
-The MIT License (MIT) - 2018
+The MIT License (MIT) - 2022
