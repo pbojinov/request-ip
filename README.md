@@ -65,7 +65,8 @@ The user ip is determined by the following order:
 11. `req.socket.remoteAddress`
 12. `req.connection.socket.remoteAddress`
 13. `req.info.remoteAddress`
-14. `request.raw` (Fastify)
+14. `Cf-Pseudo-IPv4` (Cloudflare fallback)
+15. `request.raw` (Fastify)
 
 If an IP address cannot be found, it will return `null`.
 
