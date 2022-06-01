@@ -111,10 +111,7 @@ To generate a new changelog, install [github-changelog-generator](https://github
 
 ## Contributors
 
-* Thanks to [@osherx](https://github.com/osherx) for adding the connect-middleware.
-* Thanks to [@raunc](https://github.com/raunc) for adding Squid proxy support.
-* Thanks to [@fluxsauce](https://github.com/fluxsauce) for adding `CF-Connecting-IP`, `True-Client-IP`, and ES6 support.
-* Thanks to [@vishalvijay](https://github.com/vishalvijay) for adding Fastly/Firebase hosting support.
+Thank you to all the [contributors](https://github.com/pbojinov/request-ip/graphs/contributors)!
 
 ## License
 
