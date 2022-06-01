@@ -45,8 +45,8 @@ test('req.headers is undefined', (t) => {
 
 test('getClientIpFromXForwardedFor', (t) => {
     t.plan(3);
-    t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '107.77.213.113');
-    t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), undefined);
+    t.equal(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'), '172.31.41.116');
+    t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), null);
     t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
 });
 
@@ -121,8 +121,8 @@ test('x-forwarded-for', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                const firstIp = options.headers['x-forwarded-for'].split(',')[0].trim();
-                t.equal(firstIp, found);
+                const lastIp = options.headers['x-forwarded-for'].split(',')[2].trim();
+                t.equal(lastIp, found);
                 server.close();
             }
         });
@@ -496,7 +496,7 @@ test('android request to AWS EBS app (x-forwarded-for)', (t) => {
         headers: {
             host: '[redacted]',
             'x-real-ip': '172.31.41.116',
-            'x-forwarded-for': '107.77.213.113, 172.31.41.116',
+            'x-forwarded-for': `172.31.41.116, ${wanted}`,
             'accept-encoding': 'gzip',
             'user-agent': 'okhttp/3.4.1',
             'x-forwarded-port': '443',
