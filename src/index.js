@@ -49,7 +49,7 @@ function getClientIp(req) {
 
     // Server is probably behind a proxy.
     if (req.headers) {
-        
+
         // Standard headers used by Amazon EC2, Heroku, and others.
         if (is.ip(req.headers['x-client-ip'])) {
             return req.headers['x-client-ip'];
@@ -101,6 +101,14 @@ function getClientIp(req) {
         if (is.ip(req.headers.forwarded)) {
             return req.headers.forwarded;
         }
+
+        // Google Cloud App Engine
+        // https://cloud.google.com/appengine/docs/standard/go/reference/request-response-headers
+
+        if (is.ip(req.headers['x-appengine-user-ip'])) {
+            return req.headers['x-appengine-user-ip'];
+        }
+
     }
 
     // Remote address checks.
