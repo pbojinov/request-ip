@@ -119,6 +119,7 @@ function getClientIp(req) {
     }
 
     // Remote address checks.
+    // Deprecated
     if (is.existy(req.connection)) {
         if (is.ip(req.connection.remoteAddress)) {
             return req.connection.remoteAddress;
@@ -139,6 +140,11 @@ function getClientIp(req) {
     // AWS Api Gateway + Lambda
     if (is.existy(req.requestContext) && is.existy(req.requestContext.identity) && is.ip(req.requestContext.identity.sourceIp)) {
         return req.requestContext.identity.sourceIp;
+    }
+
+    // Fastify https://www.fastify.io/docs/latest/Reference/Request/
+    if (is.existy(req.raw)) {
+        return getClientIp(req.raw);
     }
 
     return null;

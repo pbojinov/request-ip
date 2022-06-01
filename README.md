@@ -64,6 +64,7 @@ The user ip is determined by the following order:
 10. `req.socket.remoteAddress`
 11. `req.connection.socket.remoteAddress`
 12. `req.info.remoteAddress`
+13. `request.raw` (Fastify)
 
 If an IP address cannot be found, it will return `null`.
 
