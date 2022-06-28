@@ -16,10 +16,10 @@ function getClientIpFromXForwardedFor(value) {
     }
 
     // x-forwarded-for may return multiple IP addresses in the format:
-    // "proxy 1 IP, proxy 2 IP, client IP"
+    // "client IP, proxy 1 IP, proxy 2 IP"
     // Therefore, the right-most IP address is the IP address of the most recent proxy
     // and the left-most IP address is the IP address of the originating client.
-    // source: http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
+    // source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
     // Azure Web App's also adds a port for some reason, so we'll only use the first part (the IP)
     const forwardedIps = value.split(',').map((e) => {
         const ip = e.trim();
@@ -36,7 +36,7 @@ function getClientIpFromXForwardedFor(value) {
     // Sometimes IP addresses in this header can be 'unknown' (http://stackoverflow.com/a/11285650).
     // Therefore taking the right-most IP address that is not unknown
     // A Squid configuration directive can also set the value to "unknown" (http://www.squid-cache.org/Doc/config/forwarded_for/)
-    for (let i = forwardedIps.length - 1; i >= 0; i -= 1) {
+    for (let i = 0; i < forwardedIps.length; i++) {
         if (is.ip(forwardedIps[i])) {
             return forwardedIps[i];
         }
