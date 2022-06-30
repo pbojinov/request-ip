@@ -2,7 +2,20 @@
 
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/v2.2.0...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.1...HEAD)
+
+**Closed issues:**
+
+- Bad extract ip from x-forwarded-for [\#60](https://github.com/pbojinov/request-ip/issues/60)
+- Wrong Client Ip address been picked in your recent version [\#57](https://github.com/pbojinov/request-ip/issues/57)
+
+## [3.0.1](https://github.com/pbojinov/request-ip/tree/3.0.1) (2022-06-30)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.0...3.0.1)
+
+## [3.0.0](https://github.com/pbojinov/request-ip/tree/3.0.0) (2022-06-30)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/v2.2.0...3.0.0)
 
 **Closed issues:**
 
