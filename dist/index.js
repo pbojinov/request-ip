@@ -27,7 +27,7 @@ function getClientIpFromXForwardedFor(value) {
     return ip;
   });
 
-  for (var i = forwardedIps.length - 1; i >= 0; i -= 1) {
+  for (var i = 0; i < forwardedIps.length; i++) {
     if (is.ip(forwardedIps[i])) {
       return forwardedIps[i];
     }
@@ -105,6 +105,12 @@ function getClientIp(req) {
 
   if (is.existy(req.requestContext) && is.existy(req.requestContext.identity) && is.ip(req.requestContext.identity.sourceIp)) {
     return req.requestContext.identity.sourceIp;
+  }
+
+  if (req.headers) {
+    if (is.ip(req.headers['Cf-Pseudo-IPv4'])) {
+      return req.headers['Cf-Pseudo-IPv4'];
+    }
   }
 
   if (is.existy(req.raw)) {
