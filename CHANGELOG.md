@@ -1,13 +1,29 @@
 # Changelog
 
-## [2.2.0](https://github.com/pbojinov/request-ip/tree/HEAD)
+## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.1.3...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/v2.2.0...HEAD)
+
+**Closed issues:**
+
+- Does it support AdonisJS? [\#58](https://github.com/pbojinov/request-ip/issues/58)
+- ::ffff:127.0.0.1 Address from client on same VPN as application [\#56](https://github.com/pbojinov/request-ip/issues/56)
+
+**Merged pull requests:**
+
+- fix x-forwarded-header parser [\#61](https://github.com/pbojinov/request-ip/pull/61) ([aseyfpour](https://github.com/aseyfpour))
+
+## [v2.2.0](https://github.com/pbojinov/request-ip/tree/v2.2.0) (2022-06-01)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/2.1.3...v2.2.0)
 
 **Closed issues:**
 
 - Add support for Cloudflare's "Cf-Pseudo-IPv4" header \(as a last resort\) [\#46](https://github.com/pbojinov/request-ip/issues/46)
 - Mac address instead of IP [\#43](https://github.com/pbojinov/request-ip/issues/43)
+- Add support for fastify [\#41](https://github.com/pbojinov/request-ip/issues/41)
+- Client IP not getting captured  [\#36](https://github.com/pbojinov/request-ip/issues/36)
+- All my ips looks like `::ffff:127.0.0.1` [\#31](https://github.com/pbojinov/request-ip/issues/31)
 
 **Merged pull requests:**
 
