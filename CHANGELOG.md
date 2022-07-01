@@ -1,8 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
+## [3.0.2](https://github.com/pbojinov/request-ip/tree/3.0.2) (2022-06-30)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.1...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/v3.0.2...3.0.2)
+
+## [v3.0.2](https://github.com/pbojinov/request-ip/tree/v3.0.2) (2022-06-30)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.1...v3.0.2)
 
 **Closed issues:**
 

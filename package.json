@@ -54,12 +54,9 @@
     "build": "babel ./src/index.js > ./dist/index.js",
     "changelog": "github_changelog_generator -u pbojinov -p request-ip",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test": "nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/index.js"
+    "test": "nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/*.js"
   },
   "prettier": "@shopify/prettier-config",
-  "dependencies": {
-    "is_js": "^0.9.0"
-  },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
