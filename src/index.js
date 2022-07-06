@@ -1,4 +1,4 @@
-const is = require('is_js');
+const is = require('./is');
 
 /**
  * Parse x-forwarded-for headers.
