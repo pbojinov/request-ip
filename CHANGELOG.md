@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.2...HEAD)
+
+**Merged pull requests:**
+
+- Replaced is.js with internal functions [\#64](https://github.com/pbojinov/request-ip/pull/64) ([richardweaver](https://github.com/richardweaver))
+
 ## [3.0.2](https://github.com/pbojinov/request-ip/tree/3.0.2) (2022-06-30)
 
 [Full Changelog](https://github.com/pbojinov/request-ip/compare/v3.0.2...3.0.2)
