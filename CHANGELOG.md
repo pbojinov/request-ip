@@ -2,7 +2,19 @@
 
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
-[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.2...HEAD)
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.1.0...HEAD)
+
+**Closed issues:**
+
+- Incompatible with Next.js middleware/Vercel edge functions [\#63](https://github.com/pbojinov/request-ip/issues/63)
+
+## [3.1.0](https://github.com/pbojinov/request-ip/tree/3.1.0) (2022-07-06)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/v4.0.0...3.1.0)
+
+## [v4.0.0](https://github.com/pbojinov/request-ip/tree/v4.0.0) (2022-07-06)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.0.2...v4.0.0)
 
 **Merged pull requests:**
 

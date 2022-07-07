@@ -1,6 +1,6 @@
 {
   "name": "request-ip",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "A small Node.js module to retrieve the request's IP address",
   "keywords": [
     "request ip",
@@ -49,9 +49,9 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "build": "babel ./src/index.js > ./dist/index.js",
+    "build": "babel src --out-dir lib",
     "changelog": "github_changelog_generator -u pbojinov -p request-ip",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "nyc --reporter=html --reporter=text --check-coverage --lines=100 --statements=100 tape ./test/*.js"
