@@ -4,7 +4,6 @@
 *.log
 node_modules
 coverage
-package-lock.json
 yarn.lock
 .nyc_output
 .idea
