@@ -47,6 +47,46 @@ function getClientIpFromXForwardedFor(value) {
 }
 
 /**
+ * Parse forwarded header.
+ *
+ * @param {string} value - The value to be parsed.
+ * @return {string|null} First known IP address, if any.
+ */
+function getClientIpFromForwarded(value) {
+    if (!is.existy(value)) {
+        return null;
+    }
+    if (is.not.string(value)) {
+        throw new TypeError(`Expected a string, got "${typeof value}"`);
+    }
+    const forwardedIps = value.split(';')[0];
+    let forwardedIp = null;
+    for (const forIp of forwardedIps.split(',')) {
+        const ipCandidate = forIp.split('=');
+        // Check if the value of the header is not corrupt.
+        if (
+            ipCandidate.length === 2 &&
+            ipCandidate[0].toLowerCase() === 'for'
+        ) {
+            let ip = ipCandidate[1].trim();
+            // Check for ipv4:port
+            if (ip.includes(':')) {
+                const splitted = ip.split(':');
+                if (splitted.length === 2) {
+                    ip = splitted[0];
+                }
+            }
+            // Check for valid IP.
+            if (is.ip(ip)) {
+                forwardedIp = ip;
+                break;
+            }
+        }
+    }
+    return forwardedIp;
+}
+
+/**
  * Determine client IP address.
  *
  * @param req
@@ -105,8 +145,9 @@ function getClientIp(req) {
             return req.headers['forwarded-for'];
         }
 
-        if (is.ip(req.headers.forwarded)) {
-            return req.headers.forwarded;
+        const forwarded = getClientIpFromForwarded(req.headers.forwarded);
+        if (is.existy(forwarded)) {
+            return forwarded;
         }
 
         // Google Cloud App Engine
@@ -193,6 +234,7 @@ function mw(options) {
 
 module.exports = {
     getClientIpFromXForwardedFor,
+    getClientIpFromForwarded,
     getClientIp,
     mw,
 };

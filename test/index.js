@@ -329,30 +329,6 @@ test('forwarded-for', (t) => {
     });
 });
 
-test('forwarded', (t) => {
-    t.plan(1);
-    const options = {
-        url: '',
-        headers: {
-            forwarded: '102.71.123.2',
-        },
-    };
-    // create new server for each test so we can easily close it after the test is done
-    // prevents tests from hanging and competing against closing a global server
-    const server = new ServerFactory();
-    server.listen(0, serverInfo.host);
-    server.on('listening', () => {
-        options.url = `http://${serverInfo.host}:${server.address().port}`;
-        request(options, (error, response, found) => {
-            if (!error && response.statusCode === 200) {
-                // make sure response ip is the same as the one we passed in
-                t.equal(options.headers.forwarded, found);
-                server.close();
-            }
-        });
-    });
-});
-
 test('req.connection.remoteAddress', (t) => {
     t.plan(1);
     const options = {
@@ -582,11 +558,12 @@ test('Fastify (request.raw) found', (t) => {
     const found = requestIp.getClientIp({
         raw: {
             headers: {
-                forwarded: '91.203.163.199',
+                forwarded:
+                    'for=94.134.90.17;host=public-api.example.org;proto=https',
             },
         },
     });
-    t.equal(found, '91.203.163.199');
+    t.equal(found, '94.134.90.17');
 });
 
 test('Fastify (request.raw) not found', (t) => {
@@ -616,4 +593,125 @@ test('Cf-Pseudo-IPv4 is not used when other valid headers exist', (t) => {
         },
     });
     t.equal(found, '129.78.138.66');
+});
+
+test('forwarded', (t) => {
+    t.plan(1);
+    const options = {
+        url: '',
+        headers: {
+            forwarded:
+                'for=123.34.567.89,for=192.0.2.43;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const lastIp = options.headers['forwarded']
+                    .split(';')[0]
+                    .split(',')[1]
+                    .split('=')[1]
+                    .trim();
+                t.equal(lastIp, found);
+                server.close();
+            }
+        });
+    });
+});
+
+test('forwarded with unknown ip', (t) => {
+    t.plan(1);
+    const options = {
+        url: '',
+        headers: {
+            forwarded:
+                'for=unknown,for=unknown,for=93.186.30.120;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const lastIp = options.headers['forwarded']
+                    .split(';')[0]
+                    .split(',')[2]
+                    .split('=')[1]
+                    .trim();
+                t.equal(lastIp, found);
+                server.close();
+            }
+        });
+    });
+});
+
+test('forwarded with ipv4:port', (t) => {
+    t.plan(1);
+    const options = {
+        url: '',
+        headers: {
+            forwarded:
+                'for=93.186.30.120:8080;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const lastIp = options.headers['forwarded']
+                    .split(';')[0]
+                    .split(',')[0]
+                    .split('=')[1]
+                    .split(':')[0]
+                    .trim();
+                t.equal(lastIp, found);
+                server.close();
+            }
+        });
+    });
+});
+
+test('getClientIpFromForwarded', (t) => {
+    t.plan(6);
+    t.equal(requestIp.getClientIpFromForwarded('imcorrupt'), null);
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=unknown;host=public-api.example.org;proto=https',
+        ),
+        null,
+    );
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=,for=;host=public-api.example.org;proto=https',
+        ),
+        null,
+    );
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=123.34.567.89,for=192.0.2.43;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
+        ),
+        '192.0.2.43',
+    );
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=192.0.2.43:12345,for=93.186.30.120;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
+        ),
+        '192.0.2.43',
+    );
+    t.throws(() => requestIp.getClientIpFromForwarded({}), TypeError);
 });
