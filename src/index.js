@@ -62,16 +62,25 @@ function getClientIpFromForwarded(value) {
     const forwardedIps = value.split(';')[0];
     let forwardedIp = null;
     for (const forIp of forwardedIps.split(',')) {
-        let ip = forIp.split('=')[1].trim();
-        if (ip.includes(':')) {
-            const splitted = ip.split(':');
-            if (splitted.length === 2) {
-                ip = splitted[0];
+        const ipCandidate = forIp.split('=');
+        // Check if the value of the header is not corrupt.
+        if (
+            ipCandidate.length === 2 &&
+            ipCandidate[0].toLowerCase() === 'for'
+        ) {
+            let ip = ipCandidate[1].trim();
+            // Check for ipv4:port
+            if (ip.includes(':')) {
+                const splitted = ip.split(':');
+                if (splitted.length === 2) {
+                    ip = splitted[0];
+                }
             }
-        }
-        if (is.ip(ip)) {
-            forwardedIp = ip;
-            break;
+            // Check for valid IP.
+            if (is.ip(ip)) {
+                forwardedIp = ip;
+                break;
+            }
         }
     }
     return forwardedIp;
@@ -137,7 +146,7 @@ function getClientIp(req) {
         }
 
         const forwarded = getClientIpFromForwarded(req.headers.forwarded);
-        if (is.ip(forwarded)) {
+        if (is.existy(forwarded)) {
             return forwarded;
         }
 

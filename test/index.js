@@ -687,7 +687,20 @@ test('forwarded with ipv4:port', (t) => {
 });
 
 test('getClientIpFromForwarded', (t) => {
-    t.plan(4);
+    t.plan(6);
+    t.equal(requestIp.getClientIpFromForwarded('imcorrupt'), null);
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=unknown;host=public-api.example.org;proto=https',
+        ),
+        null,
+    );
+    t.equal(
+        requestIp.getClientIpFromForwarded(
+            'for=,for=;host=public-api.example.org;proto=https',
+        ),
+        null,
+    );
     t.equal(
         requestIp.getClientIpFromForwarded(
             'for=123.34.567.89,for=192.0.2.43;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
@@ -699,12 +712,6 @@ test('getClientIpFromForwarded', (t) => {
             'for=192.0.2.43:12345,for=93.186.30.120;by=[APIGW_IP];host=apiid.execute-api.us-east-1.amazonaws.com;proto=https',
         ),
         '192.0.2.43',
-    );
-    t.equal(
-        requestIp.getClientIpFromForwarded(
-            'for=unknown;host=public-api.example.org;proto=https',
-        ),
-        null,
     );
     t.throws(() => requestIp.getClientIpFromForwarded({}), TypeError);
 });
