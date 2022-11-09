@@ -1,12 +1,8 @@
 const http = require('http');
 
 const request = require('request');
-const tapSpec = require('tap-spec');
-const test = require('tape');
 
 const requestIp = require('../src/index.js');
-
-test.createStream().pipe(tapSpec()).pipe(process.stdout);
 
 // Setup local server for testing
 const serverInfo = {
@@ -24,8 +20,8 @@ function ServerFactory() {
     });
 }
 
-test('req.headers is undefined', (t) => {
-    t.plan(1);
+test('req.headers is undefined', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
     };
@@ -38,25 +34,23 @@ test('req.headers is undefined', (t) => {
         options.url = `http://${serverInfo.host}:${server.address().port}`;
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
-                t.equal(found, '127.0.0.1');
+                expect(found).toBe('127.0.0.1');
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('getClientIpFromXForwardedFor', (t) => {
-    t.plan(3);
-    t.equal(
-        requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116'),
-        '107.77.213.113',
-    );
-    t.equal(requestIp.getClientIpFromXForwardedFor('unknown, unknown'), null);
-    t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
+test('getClientIpFromXForwardedFor', () => {
+    expect.assertions(3);
+    expect(requestIp.getClientIpFromXForwardedFor('107.77.213.113, 172.31.41.116')).toBe('107.77.213.113');
+    expect(requestIp.getClientIpFromXForwardedFor('unknown, unknown')).toBe(null);
+    expect(() => requestIp.getClientIpFromXForwardedFor({})).toThrowError(TypeError);
 });
 
-test('x-client-ip', (t) => {
-    t.plan(1);
+test('x-client-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -75,15 +69,16 @@ test('x-client-ip', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['x-client-ip'], found);
+                expect(options.headers['x-client-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('fastly-client-ip', (t) => {
-    t.plan(1);
+test('fastly-client-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -102,15 +97,16 @@ test('fastly-client-ip', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['fastly-client-ip'], found);
+                expect(options.headers['fastly-client-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-forwarded-for', (t) => {
-    t.plan(1);
+test('x-forwarded-for', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -129,15 +125,16 @@ test('x-forwarded-for', (t) => {
                 const lastIp = options.headers['x-forwarded-for']
                     .split(',')[0]
                     .trim();
-                t.equal(lastIp, found);
+                expect(lastIp).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-forwarded-for with unknown first ip', (t) => {
-    t.plan(1);
+test('x-forwarded-for with unknown first ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -156,15 +153,16 @@ test('x-forwarded-for with unknown first ip', (t) => {
                 const secondIp = options.headers['x-forwarded-for']
                     .split(',')[1]
                     .trim();
-                t.equal(secondIp, found);
+                expect(secondIp).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-forwarded-for with ipv4:port', (t) => {
-    t.plan(1);
+test('x-forwarded-for with ipv4:port', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -184,15 +182,16 @@ test('x-forwarded-for with ipv4:port', (t) => {
                     .split(',')[0]
                     .trim()
                     .split(':')[0];
-                t.equal(firstIp, found);
+                expect(firstIp).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('cf-connecting-ip', (t) => {
-    t.plan(1);
+test('cf-connecting-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -205,15 +204,16 @@ test('cf-connecting-ip', (t) => {
         options.url = `http://${serverInfo.host}:${server.address().port}`;
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
-                t.equal(options.headers['cf-connecting-ip'], found);
+                expect(options.headers['cf-connecting-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('true-client-ip', (t) => {
-    t.plan(1);
+test('true-client-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -226,15 +226,16 @@ test('true-client-ip', (t) => {
         options.url = `http://${serverInfo.host}:${server.address().port}`;
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
-                t.equal(options.headers['true-client-ip'], found);
+                expect(options.headers['true-client-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-real-ip', (t) => {
-    t.plan(1);
+test('x-real-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -250,15 +251,16 @@ test('x-real-ip', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['x-real-ip'], found);
+                expect(options.headers['x-real-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-cluster-client-ip', (t) => {
-    t.plan(1);
+test('x-cluster-client-ip', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -274,15 +276,16 @@ test('x-cluster-client-ip', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['x-cluster-client-ip'], found);
+                expect(options.headers['x-cluster-client-ip']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('x-forwarded', (t) => {
-    t.plan(1);
+test('x-forwarded', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -298,15 +301,16 @@ test('x-forwarded', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['x-forwarded'], found);
+                expect(options.headers['x-forwarded']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('forwarded-for', (t) => {
-    t.plan(1);
+test('forwarded-for', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -322,15 +326,16 @@ test('forwarded-for', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers['forwarded-for'], found);
+                expect(options.headers['forwarded-for']).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('forwarded', (t) => {
-    t.plan(1);
+test('forwarded', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
         headers: {
@@ -346,15 +351,16 @@ test('forwarded', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // make sure response ip is the same as the one we passed in
-                t.equal(options.headers.forwarded, found);
+                expect(options.headers.forwarded).toBe(found);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('req.connection.remoteAddress', (t) => {
-    t.plan(1);
+test('req.connection.remoteAddress', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
     };
@@ -364,15 +370,16 @@ test('req.connection.remoteAddress', (t) => {
         options.url = `http://${serverInfo.host}:${server.address().port}`;
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
-                t.equal(found, serverInfo.host);
+                expect(found).toBe(serverInfo.host);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('req.connection.socket.remoteAddress', (t) => {
-    t.plan(1);
+test('req.connection.socket.remoteAddress', (done) => {
+    expect.assertions(1);
     const options = {
         url: '',
     };
@@ -383,25 +390,26 @@ test('req.connection.socket.remoteAddress', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // ip address should be equal to the server host we used at the top
-                t.equal(found, serverInfo.host);
+                expect(found).toBe(serverInfo.host);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('getClientIp - req.connection.remoteAddress', (t) => {
-    t.plan(1);
+test('getClientIp - req.connection.remoteAddress', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         connection: {
             remoteAddress: '172.217.6.78',
         },
     });
-    t.equal(found, '172.217.6.78');
+    expect(found).toBe('172.217.6.78');
 });
 
-test('getClientIp - req.connection.socket.remoteAddress', (t) => {
-    t.plan(2);
+test('getClientIp - req.connection.socket.remoteAddress', () => {
+    expect.assertions(2);
     const mockReq = {
         connection: {
             socket: {
@@ -409,33 +417,33 @@ test('getClientIp - req.connection.socket.remoteAddress', (t) => {
             },
         },
     };
-    t.equal(requestIp.getClientIp(mockReq), '206.190.36.45');
+    expect(requestIp.getClientIp(mockReq)).toBe('206.190.36.45');
     mockReq.connection.socket.remoteAddress = 'fail';
-    t.equal(requestIp.getClientIp(mockReq), null);
+    expect(requestIp.getClientIp(mockReq)).toBe(null);
 });
 
-test('req.socket.remoteAddress', (t) => {
-    t.plan(1);
+test('req.socket.remoteAddress', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         socket: {
             remoteAddress: '204.79.197.200',
         },
     });
-    t.equal(found, '204.79.197.200');
+    expect(found).toBe('204.79.197.200');
 });
 
-test('getClientIp - req.info.remoteAddress', (t) => {
-    t.plan(1);
+test('getClientIp - req.info.remoteAddress', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         info: {
             remoteAddress: '50.18.192.250',
         },
     });
-    t.equal(found, '50.18.192.250');
+    expect(found).toBe('50.18.192.250');
 });
 
-test('getClientIp - req.requestContext.identity.sourceIp', (t) => {
-    t.plan(1);
+test('getClientIp - req.requestContext.identity.sourceIp', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         requestContext: {
             identity: {
@@ -443,64 +451,48 @@ test('getClientIp - req.requestContext.identity.sourceIp', (t) => {
             },
         },
     });
-    t.equal(found, '50.18.192.250');
+    expect(found).toBe('50.18.192.250');
 });
 
-test('getClientIp - default', (t) => {
-    t.plan(1);
+test('getClientIp - default', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({});
-    t.equal(found, null);
+    expect(found).toBe(null);
 });
 
-test('request-ip.mw', (t) => {
-    t.plan(3);
-    t.equal(
-        typeof requestIp.mw,
-        'function',
-        'requestIp.mw - should be a factory function',
-    );
-    t.equal(
-        requestIp.mw.length,
-        1,
-        'requestIp.mw expects 1 argument - options',
-    );
-    t.throws(() => requestIp.mw('fail'), TypeError);
+test('request-ip.mw', () => {
+    expect.assertions(3);
+    expect(typeof requestIp.mw).toBe('function');
+    expect(requestIp.mw.length).toBe(1);
+    expect(() => requestIp.mw('fail')).toThrowError(TypeError);
 });
 
-test('request-ip.mw - used with no arguments', (t) => {
-    t.plan(2);
+test('request-ip.mw - used with no arguments', () => {
+    expect.assertions(2);
     const mw = requestIp.mw();
-    t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
+    expect(typeof mw === 'function' && mw.length === 3).toBeTruthy();
 
     const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     mw(mockReq, null, () => {
-        t.equal(
-            mockReq.clientIp,
-            '111.222.111.222',
-            "when used - the middleware augments the request object with attribute 'clientIp'",
-        );
+        expect(mockReq.clientIp).toBe('111.222.111.222');
     });
 });
 
-test('request-ip.mw - user code customizes augmented attribute name', (t) => {
-    t.plan(2);
+test('request-ip.mw - user code customizes augmented attribute name', () => {
+    expect.assertions(2);
     const mw = requestIp.mw({ attributeName: 'realIp' });
-    t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
+    expect(typeof mw === 'function' && mw.length === 3).toBeTruthy();
 
     const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     mw(mockReq, null, () => {
-        t.equal(
-            mockReq.realIp,
-            '111.222.111.222',
-            'when used - the middleware augments the request object with user-specified attribute name ',
-        );
+        expect(mockReq.realIp).toBe('111.222.111.222');
     });
 });
 
-test('request-ip.mw - attribute has getter by Object.defineProperty', (t) => {
-    t.plan(2);
+test('request-ip.mw - attribute has getter by Object.defineProperty', () => {
+    expect.assertions(2);
     const mw = requestIp.mw();
-    t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
+    expect(typeof mw === 'function' && mw.length === 3).toBeTruthy();
 
     const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     Object.defineProperty(mockReq, 'clientIp', {
@@ -509,16 +501,12 @@ test('request-ip.mw - attribute has getter by Object.defineProperty', (t) => {
         get: () => '1.2.3.4',
     });
     mw(mockReq, null, () => {
-        t.equal(
-            mockReq.clientIp,
-            '111.222.111.222',
-            "when used - the middleware augments the request object with attribute 'clientIp'",
-        );
+        expect(mockReq.clientIp).toBe('111.222.111.222');
     });
 });
 
-test('android request to AWS EBS app (x-forwarded-for)', (t) => {
-    t.plan(1);
+test('android request to AWS EBS app (x-forwarded-for)', (done) => {
+    expect.assertions(1);
     // 172.x.x.x and 192.x.x.x. are considered "private IP subnets"
     // so we want to library to return "107.77.213.113" as the IP address
     // https://tools.ietf.org/html/rfc1918#section-3
@@ -545,15 +533,16 @@ test('android request to AWS EBS app (x-forwarded-for)', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // ip address should be equal to the first "x-forwarded-for" value
-                t.equal(found, wanted);
+                expect(found).toBe(wanted);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('request to Google Cloud App Engine (x-appengine-user-ip)', (t) => {
-    t.plan(1);
+test('request to Google Cloud App Engine (x-appengine-user-ip)', (done) => {
+    expect.assertions(1);
     const wanted = '107.77.213.113';
     const options = {
         url: '',
@@ -570,15 +559,16 @@ test('request to Google Cloud App Engine (x-appengine-user-ip)', (t) => {
         request(options, (error, response, found) => {
             if (!error && response.statusCode === 200) {
                 // ip address should be equal to the first "x-appengine-user-ip" value
-                t.equal(found, wanted);
+                expect(found).toBe(wanted);
                 server.close();
+                done();
             }
         });
     });
 });
 
-test('Fastify (request.raw) found', (t) => {
-    t.plan(1);
+test('Fastify (request.raw) found', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         raw: {
             headers: {
@@ -586,34 +576,34 @@ test('Fastify (request.raw) found', (t) => {
             },
         },
     });
-    t.equal(found, '91.203.163.199');
+    expect(found).toBe('91.203.163.199');
 });
 
-test('Fastify (request.raw) not found', (t) => {
-    t.plan(1);
+test('Fastify (request.raw) not found', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         raw: {},
     });
-    t.equal(found, null);
+    expect(found).toBe(null);
 });
 
-test('Cf-Pseudo-IPv4 – Cloudflare fallback', (t) => {
-    t.plan(1);
+test('Cf-Pseudo-IPv4 – Cloudflare fallback', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         headers: {
             'Cf-Pseudo-IPv4': '29.74.48.74',
         },
     });
-    t.equal(found, '29.74.48.74');
+    expect(found).toBe('29.74.48.74');
 });
 
-test('Cf-Pseudo-IPv4 is not used when other valid headers exist', (t) => {
-    t.plan(1);
+test('Cf-Pseudo-IPv4 is not used when other valid headers exist', () => {
+    expect.assertions(1);
     const found = requestIp.getClientIp({
         headers: {
             'Cf-Pseudo-IPv4': '29.74.48.74',
             'x-forwarded-for': '129.78.138.66',
         },
     });
-    t.equal(found, '129.78.138.66');
+    expect(found).toBe('129.78.138.66');
 });
