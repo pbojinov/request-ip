@@ -472,7 +472,7 @@ test('request-ip.mw - used with no arguments', (t) => {
     const mw = requestIp.mw();
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
+    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     mw(mockReq, null, () => {
         t.equal(
             mockReq.clientIp,
@@ -484,10 +484,10 @@ test('request-ip.mw - used with no arguments', (t) => {
 
 test('request-ip.mw - user code customizes augmented attribute name', (t) => {
     t.plan(2);
-    const mw = requestIp.mw({attributeName: 'realIp'});
+    const mw = requestIp.mw({ attributeName: 'realIp' });
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
+    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     mw(mockReq, null, () => {
         t.equal(
             mockReq.realIp,
@@ -502,7 +502,7 @@ test('request-ip.mw - attribute has getter by Object.defineProperty', (t) => {
     const mw = requestIp.mw();
     t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
 
-    const mockReq = {headers: {'x-forwarded-for': '111.222.111.222'}};
+    const mockReq = { headers: { 'x-forwarded-for': '111.222.111.222' } };
     Object.defineProperty(mockReq, 'clientIp', {
         enumerable: true,
         configurable: true,
