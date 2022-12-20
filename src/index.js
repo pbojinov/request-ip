@@ -68,12 +68,10 @@ function getClientIpFromXForwardedFor(value) {
  * @returns {string | undefined | null}
  */
 function getClientIpByHeader(req, header) {
-    if (!req?.headers?.[header]) return null;
-
     switch (header) {
         // Standard headers used by Amazon EC2, Heroku, and others.
         case 'x-client-ip': {
-            if (is.ip(req.headers['x-client-ip'])) {
+            if (is.ip(req?.headers['x-client-ip'])) {
                 return req.headers['x-client-ip'];
             }
             break;
@@ -81,7 +79,7 @@ function getClientIpByHeader(req, header) {
         // Load-balancers (AWS ELB) or proxies.
         case 'x-forwarded-for': {
             const xForwardedFor = getClientIpFromXForwardedFor(
-                req.headers['x-forwarded-for'],
+                req?.headers['x-forwarded-for'],
             );
 
             if (is.ip(xForwardedFor)) {
@@ -93,28 +91,28 @@ function getClientIpByHeader(req, header) {
         // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
         // CF-Connecting-IP - applied to every request to the origin.
         case 'cf-connecting-ip': {
-            if (is.ip(req.headers['cf-connecting-ip'])) {
+            if (is.ip(req?.headers['cf-connecting-ip'])) {
                 return req.headers['cf-connecting-ip'];
             }
             break;
         }
         // Fastly and Firebase hosting header (When forwared to cloud function)
         case 'fastly-client-ip': {
-            if (is.ip(req.headers['fastly-client-ip'])) {
+            if (is.ip(req?.headers['fastly-client-ip'])) {
                 return req.headers['fastly-client-ip'];
             }
             break;
         }
         // Akamai and Cloudflare: True-Client-IP.
         case 'true-client-ip': {
-            if (is.ip(req.headers['true-client-ip'])) {
+            if (is.ip(req?.headers['true-client-ip'])) {
                 return req.headers['true-client-ip'];
             }
             break;
         }
         // Default nginx proxy/fcgi; alternative to x-forwarded-for, used by some proxies.
         case 'x-real-ip': {
-            if (is.ip(req.headers['x-real-ip'])) {
+            if (is.ip(req?.headers['x-real-ip'])) {
                 return req.headers['x-real-ip'];
             }
             break;
@@ -123,25 +121,25 @@ function getClientIpByHeader(req, header) {
         // http://www.rackspace.com/knowledge_center/article/controlling-access-to-linux-cloud-sites-based-on-the-client-ip-address
         // https://splash.riverbed.com/docs/DOC-1926
         case 'x-cluster-client-ip': {
-            if (is.ip(req.headers['x-cluster-client-ip'])) {
+            if (is.ip(req?.headers['x-cluster-client-ip'])) {
                 return req.headers['x-cluster-client-ip'];
             }
             break;
         }
         case 'x-forwarded': {
-            if (is.ip(req.headers['x-forwarded'])) {
+            if (is.ip(req?.headers['x-forwarded'])) {
                 return req.headers['x-forwarded'];
             }
             break;
         }
         case 'forwarded-for': {
-            if (is.ip(req.headers['forwarded-for'])) {
+            if (is.ip(req?.headers['forwarded-for'])) {
                 return req.headers['forwarded-for'];
             }
             break;
         }
         case 'forwarded': {
-            if (is.ip(req.headers['forwarded'])) {
+            if (is.ip(req?.headers['forwarded'])) {
                 return req.headers['forwarded'];
             }
             break;
@@ -150,12 +148,13 @@ function getClientIpByHeader(req, header) {
         // Google Cloud App Engine
         // https://cloud.google.com/appengine/docs/standard/go/reference/request-response-headers
         case 'x-appengine-user-ip': {
-            if (is.ip(req.headers['x-appengine-user-ip'])) {
-                return req.headers['x-appengine-user-ip'];
+            if (is.ip(req?.headers['x-appengine-user-ip'])) {
+                return req?.headers['x-appengine-user-ip'];
             }
             break;
         }
         default: {
+            break;
         }
     }
 
@@ -170,7 +169,7 @@ function getClientIpByHeader(req, header) {
  */
 function getClientIp(req) {
     // Server is probably behind a proxy.
-    if (req.headers) {
+    if (req?.headers) {
         for (const header of headerPriorityList) {
             const value = getClientIpByHeader(req, header);
             if (value) return value;
@@ -210,8 +209,8 @@ function getClientIp(req) {
 
     // Cloudflare fallback
     // https://blog.cloudflare.com/eliminating-the-last-reasons-to-not-enable-ipv6/#introducingpseudoipv4
-    if (req.headers) {
-        if (is.ip(req.headers['Cf-Pseudo-IPv4'])) {
+    if (req?.headers) {
+        if (is.ip(req?.headers['Cf-Pseudo-IPv4'])) {
             return req.headers['Cf-Pseudo-IPv4'];
         }
     }
