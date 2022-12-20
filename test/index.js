@@ -617,3 +617,27 @@ test('Cf-Pseudo-IPv4 is not used when other valid headers exist', (t) => {
     });
     t.equal(found, '129.78.138.66');
 });
+
+test('Header list priority', (t) => {
+    t.plan(2);
+    const realClientIp = '107.77.213.113';
+    const injectedXFFHeader = '192.168.0.1';
+    const headers = {
+        'x-forwarded-for': `${injectedXFFHeader}, ${realClientIp}`,
+        'x-real-ip': `${realClientIp}`,
+    };
+    const mw = requestIp.mw({
+        prioritize: ['x-real-ip'], // set priority over x-forwarded-for
+    });
+
+    t.ok(typeof mw === 'function' && mw.length === 3, 'returns a middleware');
+
+    const mockReq = {headers};
+    mw(mockReq, null, () => {
+        t.equal(
+            mockReq.clientIp,
+            realClientIp,
+            `Expects returned result to be ${realClientIp} instead of ${injectedXFFHeader}`,
+        );
+    });
+});

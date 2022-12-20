@@ -1,6 +1,6 @@
 # request-ip
 
-A tiny Node.js module for retrieving a request's IP address. 
+A tiny Node.js module for retrieving a request's IP address.
 
 ![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=3)
 
@@ -12,27 +12,29 @@ A tiny Node.js module for retrieving a request's IP address.
 ## Installation
 
 Yarn
+
 ```
 yarn add request-ip
 ```
 
 npm
+
 ```bash
 npm install request-ip --save
 ```
-    
+
 ## Getting Started
 
 ```javascript
 const requestIp = require('request-ip');
 
 // inside middleware handler
-const ipMiddleware = function(req, res, next) {
-    const clientIp = requestIp.getClientIp(req); 
-    next();
+const ipMiddleware = function (req, res, next) {
+  const clientIp = requestIp.getClientIp(req);
+  next();
 };
 
-// on localhost you'll see 127.0.0.1 if you're using IPv4 
+// on localhost you'll see 127.0.0.1 if you're using IPv4
 // or ::1, ::ffff:127.0.0.1 if you're using IPv6
 ```
 
@@ -40,17 +42,18 @@ const ipMiddleware = function(req, res, next) {
 
 ```javascript
 const requestIp = require('request-ip');
-app.use(requestIp.mw())
+app.use(requestIp.mw());
 
-app.use(function(req, res) {
-    const ip = req.clientIp;
-    res.end(ip);
+app.use(function (req, res) {
+  const ip = req.clientIp;
+  res.end(ip);
 });
 ```
 
 To see a full working code for the middleware, check out the [examples](https://github.com/pbojinov/request-ip/tree/master/examples) folder.
 
-The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings. 
+The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings.
+And it also support header check priority.
 
 ## How It Works
 
@@ -58,7 +61,7 @@ It looks for specific headers in the request and falls back to some defaults if 
 
 The user ip is determined by the following order:
 
-1. `X-Client-IP`  
+1. `X-Client-IP`
 2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the first one.)
 3. `CF-Connecting-IP` (Cloudflare)
 4. `Fastly-Client-Ip` (Fastly CDN and Firebase hosting header when forwared to a cloud function)
@@ -78,8 +81,7 @@ If an IP address cannot be found, it will return `null`.
 
 ## Samples Use Cases
 
-* Getting a user's IP for geolocation.
-
+- Getting a user's IP for geolocation.
 
 ## Running the Tests
 
