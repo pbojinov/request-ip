@@ -55,6 +55,20 @@ test('getClientIpFromXForwardedFor', (t) => {
     t.throws(() => requestIp.getClientIpFromXForwardedFor({}), TypeError);
 });
 
+test('getClientIpByHeader', (t) => {
+    t.plan(2);
+    const mockRequest = {
+        headers: {
+            'x-real-ip': '107.77.213.114',
+        },
+    };
+    t.equal(
+        requestIp.getClientIpByHeader(mockRequest, 'x-real-ip'),
+        '107.77.213.114',
+    );
+    t.equal(requestIp.getClientIpByHeader(mockRequest, 'x-client-ip'), null);
+});
+
 test('x-client-ip', (t) => {
     t.plan(1);
     const options = {
@@ -453,7 +467,7 @@ test('getClientIp - default', (t) => {
 });
 
 test('request-ip.mw', (t) => {
-    t.plan(3);
+    t.plan(4);
     t.equal(
         typeof requestIp.mw,
         'function',
@@ -465,6 +479,7 @@ test('request-ip.mw', (t) => {
         'requestIp.mw expects 1 argument - options',
     );
     t.throws(() => requestIp.mw('fail'), TypeError);
+    t.throws(() => requestIp.mw({prioritize: 'string'}), TypeError);
 });
 
 test('request-ip.mw - used with no arguments', (t) => {
