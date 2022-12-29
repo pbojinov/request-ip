@@ -10,7 +10,10 @@ var requestIp = require('request-ip');
 // you can override which attirbute the ip will be set on by
 // passing in an options object with an attributeName
 app.use(
-    requestIp.mw({attributeName: 'myCustomAttributeName', pr: ['x-real-ip']}),
+    requestIp.mw({
+        attributeName: 'myCustomAttributeName',
+        prioritize: ['x-real-ip'],
+    }),
 );
 
 // respond to all requests
