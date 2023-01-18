@@ -85,6 +85,12 @@ function getClientIp(req) {
             return req.headers['true-client-ip'];
         }
 
+        // Edgio x-0-client-ip
+        // @see https://docs.edg.io/guides/performance/request#reserved-request-headers:~:text=requests%20to%20Edgio-,x%2D0%2Dclient%2Dip,-%3A%20the%20client%20IP
+        if (is.ip(req.headers['x-0-client-ip'])) {
+            return req.headers['x-0-client-ip'];
+        }
+
         // Default nginx proxy/fcgi; alternative to x-forwarded-for, used by some proxies.
         if (is.ip(req.headers['x-real-ip'])) {
             return req.headers['x-real-ip'];
