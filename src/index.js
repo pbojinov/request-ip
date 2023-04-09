@@ -74,6 +74,13 @@ function getClientIp(req) {
         if (is.ip(req.headers['cf-connecting-ip'])) {
             return req.headers['cf-connecting-ip'];
         }
+        
+        // DigitalOcean.
+        // @see https://www.digitalocean.com/community/questions/app-platform-client-ip
+        // DO-Connecting-IP - applied to app platform servers behind a proxy.
+        if (is.ip(req.headers['do-connecting-ip'])) {
+            return req.headers['do-connecting-ip'];
+        }
 
         // Fastly and Firebase hosting header (When forwared to cloud function)
         if (is.ip(req.headers['fastly-client-ip'])) {
