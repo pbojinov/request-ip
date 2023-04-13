@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b6644888-e7be-402c-944f-78f2c4e8f669" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.babelrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.coveralls.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/is.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/is.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/is.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2BGBG1Ulo4wWlmtNUpEQBt4wdWT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/hope/githup/request-ip-type",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "/home/hope/githup/request-ip-type/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/.vscode" />
+      <recent name="$PROJECT_DIR$/node_modules/class-validator/types/decorator/string" />
+      <recent name="$PROJECT_DIR$/src/libreries" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b6644888-e7be-402c-944f-78f2c4e8f669" name="Changes" comment="" />
+      <created>1656522441219</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1656522441219</updated>
+      <workItem from="1656522442794" duration="458000" />
+      <workItem from="1656523072556" duration="906000" />
+      <workItem from="1675325486235" duration="654000" />
+      <workItem from="1675529087689" duration="1917000" />
+      <workItem from="1675531373673" duration="4962000" />
+      <workItem from="1675605505318" duration="1699000" />
+      <workItem from="1676302721044" duration="1794000" />
+      <workItem from="1676316383212" duration="6000" />
+      <workItem from="1676390902951" duration="1873000" />
+      <workItem from="1676527385178" duration="109000" />
+      <workItem from="1676805616808" duration="56000" />
+      <workItem from="1676806054918" duration="4517000" />
+      <workItem from="1676811076184" duration="250000" />
+      <workItem from="1676811722494" duration="44000" />
+      <workItem from="1676812027465" duration="167000" />
+      <workItem from="1676813722668" duration="385000" />
+      <workItem from="1676908333960" duration="23000" />
+      <workItem from="1677434319373" duration="2563000" />
+      <workItem from="1678857479330" duration="40000" />
+      <workItem from="1678857797122" duration="1753000" />
+      <workItem from="1681062485675" duration="2992000" />
+      <workItem from="1681152421701" duration="1238000" />
+      <workItem from="1681153942299" duration="1750000" />
+      <workItem from="1681231182437" duration="3751000" />
+      <workItem from="1681235514938" duration="904000" />
+      <workItem from="1681305806462" duration="3455000" />
+      <workItem from="1681393906583" duration="1075000" />
+      <workItem from="1681399015129" duration="1050000" />
+      <workItem from="1681400116312" duration="1154000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

@@ -1,6 +1,6 @@
 # request-ip
 
-A tiny Node.js module for retrieving a request's IP address. 
+A tiny Node.js module for retrieving a request's IP address.
 
 ![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=3)
 
@@ -20,7 +20,7 @@ npm
 ```bash
 npm install request-ip --save
 ```
-    
+
 ## Getting Started
 
 ```javascript
@@ -28,11 +28,11 @@ const requestIp = require('request-ip');
 
 // inside middleware handler
 const ipMiddleware = function(req, res, next) {
-    const clientIp = requestIp.getClientIp(req); 
+    const clientIp = requestIp.getClientIp(req);
     next();
 };
 
-// on localhost you'll see 127.0.0.1 if you're using IPv4 
+// on localhost you'll see 127.0.0.1 if you're using IPv4
 // or ::1, ::ffff:127.0.0.1 if you're using IPv6
 ```
 
@@ -50,7 +50,7 @@ app.use(function(req, res) {
 
 To see a full working code for the middleware, check out the [examples](https://github.com/pbojinov/request-ip/tree/master/examples) folder.
 
-The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings. 
+The connect-middleware also supports retrieving the ip address under a custom attribute name, which also works as a container for any future settings.
 
 ## How It Works
 
@@ -58,7 +58,7 @@ It looks for specific headers in the request and falls back to some defaults if 
 
 The user ip is determined by the following order:
 
-1. `X-Client-IP`  
+1. `X-Client-IP`
 2. `X-Forwarded-For` (Header may return multiple IP addresses in the format: "client IP, proxy 1 IP, proxy 2 IP", so we take the first one.)
 3. `CF-Connecting-IP` (Cloudflare)
 4. `Fastly-Client-Ip` (Fastly CDN and Firebase hosting header when forwared to a cloud function)
@@ -97,7 +97,7 @@ npm test
 
 ## Building
 
-Compiles the current ES6 code to ES5 using Babel.
+Compiles the current Typescript code to Javascript .
 
 ```
 npm build

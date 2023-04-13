@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/pbojinov/request-ip/tree/3.2.0) (2023-03-13)
+
+[Full Changelog](https://github.com/pbojinov/request-ip/compare/3.1.0...3.2.0)
+
+**Typescript issues:**
+
+- Migrate project to typescript  [\#]()
+
+
+
+
 ## [Unreleased](https://github.com/pbojinov/request-ip/tree/HEAD)
 
 [Full Changelog](https://github.com/pbojinov/request-ip/compare/3.2.0...HEAD)
