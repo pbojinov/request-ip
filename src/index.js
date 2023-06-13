@@ -68,13 +68,21 @@ function getClientIp(req) {
             return xForwardedFor;
         }
 
+        // Kubernetes Ingress
+        const xOriginalForwardedFor = getClientIpFromXForwardedFor(
+            req.headers['x-original-forwarded-for'],
+        );
+        if (is.ip(xOriginalForwardedFor)) {
+            return xOriginalForwardedFor;
+        }
+
         // Cloudflare.
         // @see https://support.cloudflare.com/hc/en-us/articles/200170986-How-does-Cloudflare-handle-HTTP-Request-headers-
         // CF-Connecting-IP - applied to every request to the origin.
         if (is.ip(req.headers['cf-connecting-ip'])) {
             return req.headers['cf-connecting-ip'];
         }
-        
+
         // DigitalOcean.
         // @see https://www.digitalocean.com/community/questions/app-platform-client-ip
         // DO-Connecting-IP - applied to app platform servers behind a proxy.

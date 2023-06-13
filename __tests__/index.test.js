@@ -190,6 +190,91 @@ test('x-forwarded-for with ipv4:port', (done) => {
     });
 });
 
+test('x-original-forwarded-for', (done) => {
+    expect.assertions(1);
+    const options = {
+        url: '',
+        headers: {
+            'x-original-forwarded-for': '129.78.138.66, 129.78.64.103, 129.78.64.105',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const lastIp = options.headers['x-original-forwarded-for']
+                    .split(',')[0]
+                    .trim();
+                expect(lastIp).toBe(found);
+                server.close();
+                done();
+            }
+        });
+    });
+});
+
+test('x-original-forwarded-for with unknown first ip', (done) => {
+    expect.assertions(1);
+    const options = {
+        url: '',
+        headers: {
+            'x-original-forwarded-for': 'unknown, 93.186.30.120',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const secondIp = options.headers['x-original-forwarded-for']
+                    .split(',')[1]
+                    .trim();
+                expect(secondIp).toBe(found);
+                server.close();
+                done();
+            }
+        });
+    });
+});
+
+test('x-original-forwarded-for with ipv4:port', (done) => {
+    expect.assertions(1);
+    const options = {
+        url: '',
+        headers: {
+            'x-original-forwarded-for': '93.186.30.120:12345',
+        },
+    };
+    // create new server for each test so we can easily close it after the test is done
+    // prevents tests from hanging and competing against closing a global server
+    const server = new ServerFactory();
+    server.listen(0, serverInfo.host);
+    server.on('listening', () => {
+        options.url = `http://${serverInfo.host}:${server.address().port}`;
+        request(options, (error, response, found) => {
+            if (!error && response.statusCode === 200) {
+                // make sure response ip is the same as the one we passed in
+                const firstIp = options.headers['x-original-forwarded-for']
+                    .split(',')[0]
+                    .trim()
+                    .split(':')[0];
+                expect(firstIp).toBe(found);
+                server.close();
+                done();
+            }
+        });
+    });
+});
+
 test('cf-connecting-ip', (done) => {
     expect.assertions(1);
     const options = {

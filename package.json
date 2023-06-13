@@ -12,6 +12,7 @@
     "header",
     "X-Client-IP",
     "X-Forwarded-For",
+    "X-Original-Forwarded-For",
     "CF-Connecting-IP",
     "Fastly-Client-IP",
     "True-Client-IP",
