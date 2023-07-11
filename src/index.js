@@ -22,7 +22,11 @@ function getClientIpFromXForwardedFor(value) {
     // source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
     // Azure Web App's also adds a port for some reason, so we'll only use the first part (the IP)
     const forwardedIps = value.split(',').map((e) => {
-        const ip = e.trim();
+        let ip = e.trim();
+        if (ip.startsWith('[') && ip.endsWith(']')) {
+            // many proxies include brackets around ipv6 addresses, as per RFC7239; remove them
+            ip = ip.substring(1, ip.length - 1);
+        }
         if (ip.includes(':')) {
             const splitted = ip.split(':');
             // make sure we only use this if it's ipv4 (ip:port)
