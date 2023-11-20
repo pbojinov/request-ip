@@ -1,6 +1,6 @@
 # request-ip
 
-A tiny Node.js module for retrieving a request's IP address. 
+A tiny Node.js module for retrieving a request's IP address, for informational purposes only (not to be relied on for security).
 
 ![](https://nodei.co/npm/request-ip.png?downloads=true&cacheBust=3)
 
@@ -79,6 +79,15 @@ If an IP address cannot be found, it will return `null`.
 ## Samples Use Cases
 
 * Getting a user's IP for geolocation.
+
+## Security Warning
+This library is not to be relied upon for security purposes due to the risk of IP address spoofing by malicious clients, who could insert a false IP into a high-priority header.
+
+If you need to determine the IP securely, first determine how the clients will be connecting to your server:
+
+* Direct Connections: Use the TCP connection IP from the request object.
+* Through Proxies / Load Balancers: Identify the specific header used by your load balancer and parse that one only. Be aware of how your load balancer handles preexisting (spoofed) headers of that type. Commonly, the load balancer appends the client IP to the existing header, and therefore the legitimate IP is the rightmost entry. However if you have multiple chained proxies, each one will append to the header, and you'll either need to count leftwards from the right to find the true client IP, or set the later proxies in the chain to pass through the header unchanged.
+* Some of both: it will be challenging to do this securely. You will need to determine on a case-by-case basis whether a request has definitely come through your proxy (probably by matching the TCP IP against that of your proxies) and only rely on the header if it has.
 
 
 ## Running the Tests
