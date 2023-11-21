@@ -34,7 +34,7 @@ function existy(value) {
  */
 function ip(value) {
     return (
-        (existy(value) && regexes.ipv4.test(value)) || regexes.ipv6.test(value)
+        existy(value) && (regexes.ipv4.test(value) || regexes.ipv6.test(value))
     );
 }
 
